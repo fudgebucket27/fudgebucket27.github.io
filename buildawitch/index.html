@@ -22,7 +22,7 @@
 
         @font-face {
             font-family: 'HelveticaNeuMedium';
-            src: url('fonts/Helvetica-Neu-Medium.ttf') format('truetype'); 
+            src: url('fonts/HelveticaNeu-Medium.ttf') format('truetype'); 
             font-weight: normal;
             font-style: normal;
         }
@@ -140,7 +140,7 @@
             </div>
 
             <div class="col-md-6 text-center">
-                <canvas id="imageCanvas" style="display:none"></canvas>
+                <canvas id="imageCanvas"></canvas>
                 <button type="button" id="generate-btn" class="btn btn-primary">Generate Witch</button>
                 <p></p>
                 <p></p>
@@ -939,53 +939,80 @@ function layerImages(variation) {
                             canvas.height = imgElements[0].height;
                             // Draw all images except the final one
                             for (let i = 0; i < imgElements.length - 1; i++) {
-                                if (url != './images/.png') { // Check if image is loaded
+                                if (url !== './images/.png') { // Check if image is loaded
                                     ctx.drawImage(imgElements[i], 0, 0);
                                 }
                             }
 
-                            // Smoke effect for the final image
-                            const finalImage = imgElements[imgElements.length - 1];
-                            let opacity = 0; // Start with full transparency
+    // Create smoke particles for the final image reveal
+    const finalImage = imgElements[imgElements.length - 1];
+                let opacity = 0;
 
-                            const smokeEffect = () => {
-                                // Clear final image area
-                                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const particles = [];
+                const maxParticles = 50;
+                const smokeColor = 'rgba(200, 200, 200, 0.5)'; // Light gray smoke
 
-                                // Redraw all images before the final one
-                                for (let i = 0; i < imgElements.length - 1; i++) {
-                                    ctx.drawImage(imgElements[i], 0, 0);
-                                }
+                // Initialize particles
+                for (let i = 0; i < maxParticles; i++) {
+                    particles.push({
+                        x: canvas.width / 2,
+                        y: canvas.height / 2,
+                        size: Math.random() * 20 + 10,
+                        speedX: (Math.random() - 0.5) * 4,
+                        speedY: (Math.random() - 0.5) * 4,
+                        opacity: 1,
+                    });
+                }
 
-                                // Draw smoke effect (white to transparent)
-                                const gradient = ctx.createRadialGradient(
-                                    canvas.width / 2, canvas.height / 2, 10,
-                                    canvas.width / 2, canvas.height / 2, canvas.width / 1.5
-                                );
-                                gradient.addColorStop(0, `rgba(255, 255, 255, ${1 - opacity})`);
-                                gradient.addColorStop(1, `rgba(255, 255, 255, 0)`);
+                // Smoke puff effect function
+                const smokePuff = () => {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-                                ctx.fillStyle = gradient;
-                                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    // Draw the previous images (except the final one)
+                    for (let i = 0; i < imgElements.length - 1; i++) {
+                        if (url !== './images/.png') { // Check if image is loaded
+                                        ctx.drawImage(imgElements[i], 0, 0);
+                        }
+                    }
 
-                                // Draw final image with increasing opacity
-                                ctx.globalAlpha = opacity;
-                                ctx.drawImage(finalImage, 0, 0);
-                                ctx.globalAlpha = 1; // Reset alpha for future draws
+                    // Draw smoke particles
+                    particles.forEach(particle => {
+                        ctx.beginPath();
+                        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                        ctx.fillStyle = smokeColor.replace('0.5', particle.opacity); // Adjust opacity
+                        ctx.fill();
 
-                                // Increase opacity to reveal the final image gradually
-                                opacity += 0.02; // Adjust this value for speed
-                                if (opacity <= 1) {
-                                    requestAnimationFrame(smokeEffect);
-                                } else {
-                                    document.getElementById('imageCanvas').style.display = 'inline';
-                                }
+                        // Update particle position
+                        particle.x += particle.speedX;
+                        particle.y += particle.speedY;
+                        particle.opacity -= 0.02; // Fade out particle
+
+                        // Gradually reduce size to simulate dispersion
+                        particle.size *= 0.98;
+                    });
+
+                    // Remove particles that are almost invisible
+                    for (let i = particles.length - 1; i >= 0; i--) {
+                        if (particles[i].opacity <= 0 || particles[i].size <= 1) {
+                            particles.splice(i, 1);
+                        }
+                    }
+
+                    // Increase final image opacity
+                    opacity += 0.02;
+                    ctx.globalAlpha = opacity;
+                    ctx.drawImage(finalImage, 0, 0);
+                    ctx.globalAlpha = 1; // Reset alpha
+
+                    if (particles.length > 0 || opacity < 1) {
+                        requestAnimationFrame(smokePuff);
+                    }
                 };
 
-                // Start the smoke effect for the final image
-                smokeEffect();
+                // Start the smoke puff effect
+                smokePuff();
 
-                        }
+                         }
                     };
                     img.onerror = () => {
                         console.error(`Error loading image from URL: ${url}`);
@@ -995,7 +1022,7 @@ function layerImages(variation) {
                             canvas.height = imgElements[0]?.height || 150;
                             // Draw all images except the final one
                             for (let i = 0; i < imgElements.length - 1; i++) {
-                                if (url != './images/.png') { // Check if image is loaded
+                                if (url !== './images/.png') { // Check if image is loaded
                                     ctx.drawImage(imgElements[i], 0, 0);
                                 }
                             }
@@ -1010,7 +1037,9 @@ function layerImages(variation) {
 
                                 // Redraw all images before the final one
                                 for (let i = 0; i < imgElements.length - 1; i++) {
-                                    ctx.drawImage(imgElements[i], 0, 0);
+                                    if (url !== './images/.png') { // Check if image is loaded
+                                        ctx.drawImage(imgElements[i], 0, 0);
+                                     }
                                 }
 
                                 // Draw smoke effect (white to transparent)
@@ -1033,8 +1062,6 @@ function layerImages(variation) {
                                 opacity += 0.02; // Adjust this value for speed
                                 if (opacity <= 1) {
                                     requestAnimationFrame(smokeEffect);
-                                } else {
-                                    document.getElementById('imageCanvas').style.display = 'inline';
                                 }
                             };
 
@@ -1074,18 +1101,7 @@ function generateRandomImage() {
         }
     });
 
-    // Generate the image using the random variation
-    layerImages(variation).then(imageUrl => {
-        const canvas = document.getElementById('imageCanvas');
-        const ctx = canvas.getContext('2d');
-
-        const img = new Image();
-        img.src = imageUrl;
-        img.onload = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        };
-    });
+    document.getElementById('generate-btn').click();
 }
 
 
