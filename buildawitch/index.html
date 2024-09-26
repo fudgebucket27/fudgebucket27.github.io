@@ -695,7 +695,7 @@ const layerKeys = ['Background', 'Robe', 'Skin', 'Face', 'Hair', 'Hat', 'Wand', 
 
 function layerImages(variation) {
             return new Promise((resolve) => {
-                const canvas = document.createElement('canvas');
+                const canvas = document.getElementById('imageCanvas');
                 const ctx = canvas.getContext('2d');
 
                 const overlayImages = {
@@ -837,8 +837,8 @@ function layerImages(variation) {
 
                 imageUrls.forEach((url, index) => {
                     const img = new Image();
-                    img.crossOrigin = 'anonymous';
-                    img.src = 'https://ord-mirror.magiceden.dev'+ url;
+                    img.src = url;
+                    console.log(url);
                     img.onload = () => {
                         imgElements[index] = img;
                         loadedImages++;
@@ -848,16 +848,7 @@ function layerImages(variation) {
                             imgElements.forEach(image => {
                                 ctx.drawImage(image, 0, 0);
                             });
-                            try {
-                                resolve(canvas.toDataURL());
-                            } catch (e) {
-                                console.error('Error generating image data URL:', e);
-                                canvas.width = 150;
-                                canvas.height = 150;
-                                ctx.fillStyle = 'gray'; // Placeholder color
-                                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                                resolve(canvas.toDataURL());
-                            }
+
                         }
                     };
                     img.onerror = () => {
@@ -871,24 +862,15 @@ function layerImages(variation) {
                                     ctx.drawImage(image, 0, 0);
                                 }
                             });
-                            try {
-                                resolve(canvas.toDataURL());
-                            } catch (e) {
-                                console.error('Error generating image data URL:', e);
-                                canvas.width = 150;
-                                canvas.height = 150;
-                                ctx.fillStyle = 'gray';
-                                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                                resolve(canvas.toDataURL());
-                            }
                         }
                     };
                 });
             });
         }
 
+        const baseUrl = './images/';
 function createImageUrl(imageName) {
-    return `${baseUrl}${imageName}`;
+    return `${baseUrl}${imageName}.png`;
 }
 
 function generateRandomImage() {
@@ -928,7 +910,7 @@ function generateRandomImage() {
     });
 }
 
-const baseUrl = '/content/';
+
 
         populateSelectOptions();
         generateRandomImage(); 
