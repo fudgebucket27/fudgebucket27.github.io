@@ -59,6 +59,7 @@
                     </div>
     
                     <button type="button" id="generate-btn" class="btn btn-primary btn-block">Generate Witch</button>
+                    <button type="button" id="generate-btn2" class="btn btn-primary btn-block">I'm feeling lucky...</button>
                     <p></p>
                     <p></p>
                 </form>
@@ -656,6 +657,9 @@ const layerKeys = ['Background', 'Robe', 'Skin', 'Face', 'Hair', 'Hat', 'Wand', 
             });
     }
 
+    document.getElementById('generate-btn2').addEventListener('click', () => {
+        generateRandomImage();
+    });
 
 
         // Event listener for generating the image
