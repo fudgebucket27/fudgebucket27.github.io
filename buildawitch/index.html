@@ -7,65 +7,67 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <h1 class="mb-4">Build a Taproot Witch</h1>
-
-    <div class="row">
-        <div class="col-md-6">
-            <!-- Form for selecting layers -->
-            <form id="layerForm">
-                <div class="form-group">
-                    <label for="background">Background:</label>
-                    <select id="background" class="form-control"></select>
-                </div>
-
-                <div class="form-group">
-                    <label for="robe">Robe:</label>
-                    <select id="robe" class="form-control"></select>
-                </div>
-
-                <div class="form-group">
-                    <label for="skin">Skin:</label>
-                    <select id="skin" class="form-control"></select>
-                </div>
-
-                <div class="form-group">
-                    <label for="face">Face:</label>
-                    <select id="face" class="form-control"></select>
-                </div>
-
-                <div class="form-group">
-                    <label for="hair">Hair:</label>
-                    <select id="hair" class="form-control"></select>
-                </div>
-
-                <div class="form-group">
-                    <label for="hat">Hat:</label>
-                    <select id="hat" class="form-control"></select>
-                </div>
-
-                <div class="form-group">
-                    <label for="wand">Wand:</label>
-                    <select id="wand" class="form-control"></select>
-                </div>
-
-                <div class="form-group">
-                    <label for="special">Special:</label>
-                    <select id="special" class="form-control"></select>
-                </div>
-
-                <div class="form-group">
-                    <label for="moon">Moon:</label>
-                    <select id="moon" class="form-control"></select>
-                </div>
-
-                <button type="button" id="generate-btn" class="btn btn-primary btn-block">Generate Witch</button>
-            </form>
-        </div>
-
-        <div class="col-md-6 text-center">
-            <canvas id="imageCanvas" width="300" height="300"></canvas>
+    <div class="container">
+        <h1 class="mb-4">Build a Taproot Witch</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <!-- Form for selecting layers -->
+                <form id="layerForm">
+                    <div class="form-group">
+                        <label for="background">Background:</label>
+                        <select id="background" class="form-control"></select>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="robe">Robe:</label>
+                        <select id="robe" class="form-control"></select>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="skin">Skin:</label>
+                        <select id="skin" class="form-control"></select>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="face">Face:</label>
+                        <select id="face" class="form-control"></select>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="hair">Hair:</label>
+                        <select id="hair" class="form-control"></select>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="hat">Hat:</label>
+                        <select id="hat" class="form-control"></select>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="wand">Wand:</label>
+                        <select id="wand" class="form-control"></select>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="special">Special:</label>
+                        <select id="special" class="form-control"></select>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="moon">Moon:</label>
+                        <select id="moon" class="form-control"></select>
+                    </div>
+    
+                    <button type="button" id="generate-btn" class="btn btn-primary btn-block">Generate Witch</button>
+                </form>
+            </div>
+    
+            <div class="col-md-6 text-center">
+                <canvas id="imageCanvas" width="300" height="300"></canvas>
+            </div>
         </div>
     </div>
+   
 <script>
 // jasonsturges/lunarphase-js
 !function(e){var n,r,u,t,N,a,_=((n=_||{}).NORTHERN="Northern",n.SOUTHERN="Southern",n),i=((r=i||{}).NEW="\uD83C\uDF11",r.WAXING_CRESCENT="\uD83C\uDF12",r.FIRST_QUARTER="\uD83C\uDF13",r.WAXING_GIBBOUS="\uD83C\uDF14",r.FULL="\uD83C\uDF15",r.WANING_GIBBOUS="\uD83C\uDF16",r.LAST_QUARTER="\uD83C\uDF17",r.WANING_CRESCENT="\uD83C\uDF18",r),A=((u=A||{}).NEW="\uD83C\uDF11",u.WAXING_CRESCENT="\uD83C\uDF18",u.FIRST_QUARTER="\uD83C\uDF17",u.WAXING_GIBBOUS="\uD83C\uDF16",u.FULL="\uD83C\uDF15",u.WANING_GIBBOUS="\uD83C\uDF14",u.LAST_QUARTER="\uD83C\uDF13",u.WANING_CRESCENT="\uD83C\uDF12",u),E=((t=E||{}).ANOMALISTIC="Anomalistic",t.DRACONIC="Draconic",t.SIDEREAL="Sidereal",t.SYNODIC="Synodic",t.TROPICAL="Tropical",t),R=((N=R||{}).NEW="New Moon",N.WAXING_CRESCENT="Waxing Crescent",N.FIRST_QUARTER="First Quarter",N.WAXING_GIBBOUS="Waxing Gibbous",N.FULL="Full Moon",N.WANING_GIBBOUS="Waning Gibbous",N.LAST_QUARTER="Last Quarter",N.WANING_CRESCENT="Waning Crescent",N),I={fromDate:function(e=new Date){return e.getTime()/864e5-e.getTimezoneOffset()/1440+2440587.5},toDate:function(e){var n=new Date;return n.setTime((e-2440587.5+n.getTimezoneOffset()/1440)*864e5),n}},o={hemisphere:_.NORTHERN},T=function(e){return(e-=Math.floor(e))<0&&(e+=1),e},s=((a=s||{}).EARTH_RADII="Earth Radii",a.KILOMETERS="km",a.MILES="m",a);e.Hemisphere=_,e.Julian=I,e.LunarMonth=E,e.LunarPhase=R,e.Moon={lunarAge:function(e=new Date){return 29.53058770576*this.lunarAgePercent(e)},lunarAgePercent:function(e=new Date){return T((I.fromDate(e)-2451550.1)/29.53058770576)},lunationNumber:function(e=new Date){return Math.round((I.fromDate(e)-2423436.6115277777)/29.53058770576)+1},lunarDistance:function(e=new Date){var n=I.fromDate(e),r=2*this.lunarAgePercent(e)*Math.PI,u=2*Math.PI*T((n-2451562.2)/27.55454988);return 60.4-3.3*Math.cos(u)-.6*Math.cos(2*r-u)-.5*Math.cos(2*r)},lunarPhase:function(e=new Date,n={}){n=Object.assign({},o,n);var r=this.lunarAge(e);return r<1.84566173161?R.NEW:r<5.53698519483?R.WAXING_CRESCENT:r<9.22830865805?R.FIRST_QUARTER:r<12.91963212127?R.WAXING_GIBBOUS:r<16.61095558449?R.FULL:r<20.30227904771?R.WANING_GIBBOUS:r<23.99360251093?R.LAST_QUARTER:r<27.68492597415?R.WANING_CRESCENT:R.NEW},lunarPhaseEmoji:function(e=new Date,n={}){n=Object.assign({},o,n);var r=this.lunarPhase(e);return this.emojiForLunarPhase(r,n)},emojiForLunarPhase:function(e,n){var r=Object.assign({},o,n).hemisphere===_.SOUTHERN?A:i;switch(e){case R.WANING_CRESCENT:return r.WANING_CRESCENT;case R.LAST_QUARTER:return r.LAST_QUARTER;case R.WANING_GIBBOUS:return r.WANING_GIBBOUS;case R.FULL:return r.FULL;case R.WAXING_GIBBOUS:return r.WAXING_GIBBOUS;case R.FIRST_QUARTER:return r.FIRST_QUARTER;case R.WAXING_CRESCENT:return r.WAXING_CRESCENT;default:return r.NEW}},isWaxing:function(e=new Date){return 14.765>=this.lunarAge(e)},isWaning:function(e=new Date){return this.lunarAge(e)>14.765}},e.NorthernHemisphereLunarEmoji=i,e.SouthernHemisphereLunarEmoji=A,e.Unit=s}("undefined"!=typeof window?window:global);
