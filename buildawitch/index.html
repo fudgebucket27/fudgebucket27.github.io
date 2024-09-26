@@ -928,9 +928,9 @@ function layerImages(variation) {
                 let imgElements = [];
 
                 imageUrls.forEach((url, index) => {
-                    if (!url || url === './images/.png') {
-                    console.error(`Invalid image URL: ${url}`);
-                    return; // or use continue if inside a traditional for loop
+
+                    if (url === './images/.png') {
+                        url = './images/none.png';
                     }
 
                     const img = new Image();
