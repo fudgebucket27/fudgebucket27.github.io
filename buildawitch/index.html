@@ -719,13 +719,14 @@ function layerImages(variation) {
                     "Coffee Apron": "Robe",                    
                     "Spice Bag": "Robe",
                     "Cigarette Holder": "Top",
-                    "Antenna Headband": "Top",
+                    "Antenna": "Top",
+                    "Antenna Hatband": "Top",
                     "Laser Eyes": "Top",
                     "Cracked Glass": "Background",
                     "Glow Strong": "Background",
                     "Point Glow": "Background",
                     "Bent Glow": "Background",
-                    "Lighning": "Background",
+                    "Lightning": "Background",
                 };
 
                 const overlayUrl = overlayImages[variation['Background']];
@@ -806,22 +807,25 @@ function layerImages(variation) {
                     if (specialLayering[specialTrait] === "Top") {
                         imageUrls.push(specialUrl); 
                     } else if (specialLayering[specialTrait] === "Background") {
-                        imageUrls.unshift(specialUrl); 
+                        const backgroundIndex = imageKeys.indexOf("Background");
+                        if (backgroundIndex > -1) {
+                            imageUrls.splice(backgroundIndex + 1, 0, specialUrl);
+                        }
                     } else if (specialLayering[specialTrait] === "Robe") {
                         const robeIndex = imageKeys.indexOf("Robe");
                         if (robeIndex > -1) {
-                            imageUrls.splice(robeIndex + 1, 0, specialUrl);
+                            imageUrls.splice(robeIndex + 2, 0, specialUrl);
                         }
                     }
                 }
 
-                if (specialTrait === "Sparkle") {
+                if (specialTrait === "Sparkle Robe Overlay" || specialTrait === "Sparkle Hat Overlay" ) {
                     const sparkleRobeUrl = createImageUrl(imageJson['Special']['Sparkle Robe Overlay']);
                     const sparkleHatUrl = createImageUrl(imageJson['Special']['Sparkle Hat Overlay']);
                     
                     const robeIndex = imageKeys.indexOf("Robe");
                     if (robeIndex > -1) {
-                        imageUrls.splice(robeIndex + 1, 0, sparkleRobeUrl);
+                        imageUrls.splice(robeIndex + 2, 0, sparkleRobeUrl);
                     }
                     
                     imageUrls.push(sparkleHatUrl);
