@@ -13,6 +13,20 @@
             font-style: normal;
         }
 
+        @font-face {
+            font-family: 'HelveticaNeuBold';
+            src: url('fonts/Helvetica-Neu-Bold.ttf') format('truetype'); /* Replace with the correct path */
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'HelveticaNeuMedium';
+            src: url('fonts/Helvetica-Neu-Medium.ttf') format('truetype'); /* Replace with the correct path */
+            font-weight: normal;
+            font-style: normal;
+        }
+
         body {
             background-color: rgb(186, 54, 191); 
             color: white; 
@@ -22,6 +36,7 @@
             border-radius: 10px; 
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); 
         }
+
         .btn-primary {
             text-align: left;
             background-color: #3e0949;
@@ -42,8 +57,21 @@
             border-color: white;
         }
 
+        .btn-primary:hover {
+            background-color: white; /* Change background to white on hover */
+            color: #3e0949; /* Change text color to primary color */
+        }
+
         .header {
-        font-family: 'Pixeldust', sans-serif;
+            font-family: 'Pixeldust', sans-serif;
+        }
+
+        .formLabel {
+            font-family: 'HelveticaNeuBold', sans-serif;
+        }
+
+        .form-control {
+            font-family: 'HelveticaNeuMedium', sans-serif;
         }
 
 
@@ -57,47 +85,47 @@
                 <!-- Form for selecting layers -->
                 <form id="layerForm">
                     <div class="form-group">
-                        <label for="background">Background:</label>
+                        <label for="background" class="formLabel">Background:</label>
                         <select id="background" class="form-control"></select>
                     </div>
     
-                    <div class="form-group">
-                        <label for="robe">Robe:</label>
+                    <div class="form-group" >
+                        <label for="robe" class="formLabel">Robe:</label>
                         <select id="robe" class="form-control"></select>
                     </div>
     
                     <div class="form-group">
-                        <label for="skin">Skin:</label>
+                        <label for="skin" class="formLabel">Skin:</label>
                         <select id="skin" class="form-control"></select>
                     </div>
     
                     <div class="form-group">
-                        <label for="face">Face:</label>
+                        <label for="face" class="formLabel">Face:</label>
                         <select id="face" class="form-control"></select>
                     </div>
     
                     <div class="form-group">
-                        <label for="hair">Hair:</label>
+                        <label for="hair" class="formLabel">Hair:</label>
                         <select id="hair" class="form-control"></select>
                     </div>
     
                     <div class="form-group">
-                        <label for="hat">Hat:</label>
+                        <label for="hat" class="formLabel">Hat:</label>
                         <select id="hat" class="form-control"></select>
                     </div>
     
                     <div class="form-group">
-                        <label for="wand">Wand:</label>
+                        <label for="wand" class="formLabel">Wand:</label>
                         <select id="wand" class="form-control"></select>
                     </div>
     
                     <div class="form-group">
-                        <label for="special">Special:</label>
+                        <label for="special" class="formLabel">Special:</label>
                         <select id="special" class="form-control"></select>
                     </div>
     
                     <div class="form-group">
-                        <label for="moon">Moon:</label>
+                        <label for="moon" class="formLabel">Moon:</label>
                         <select id="moon" class="form-control"></select>
                     </div>
     
