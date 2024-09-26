@@ -22,7 +22,7 @@
 
         @font-face {
             font-family: 'HelveticaNeuMedium';
-            src: url('fonts/Helvetica-Neu-Medium.ttf') format('truetype'); 
+            src: url('fonts/HelveticaNeu-Medium.ttf') format('truetype'); 
             font-weight: normal;
             font-style: normal;
         }
@@ -140,7 +140,7 @@
             </div>
 
             <div class="col-md-6 text-center">
-                <canvas id="imageCanvas" style="display:none"></canvas>
+                <canvas id="imageCanvas"></canvas>
                 <button type="button" id="generate-btn" class="btn btn-primary">Generate Witch</button>
                 <p></p>
                 <p></p>
@@ -928,6 +928,11 @@ function layerImages(variation) {
                 let imgElements = [];
 
                 imageUrls.forEach((url, index) => {
+                    if (!url || url === './images/.png') {
+                    console.error(`Invalid image URL: ${url}`);
+                    return; // or use continue if inside a traditional for loop
+                    }
+
                     const img = new Image();
                     img.src = url;
                     console.log(url);
@@ -937,12 +942,80 @@ function layerImages(variation) {
                         if (loadedImages === imageUrls.length) {
                             canvas.width = imgElements[0].width;
                             canvas.height = imgElements[0].height;
-                            imgElements.forEach(image => {
-                                ctx.drawImage(image, 0, 0);
-                            });
-                            document.getElementById('imageCanvas').style.display = 'inline';
+                            // Draw all images except the final one
+                            for (let i = 0; i < imgElements.length - 1; i++) {
+                                    ctx.drawImage(imgElements[i], 0, 0);
+                            }
 
+        // Smoke particles for full-canvas effect
+        const finalImage = imgElements[imgElements.length - 1];
+                let opacity = 0;
+
+                const particles = [];
+                const maxParticles = 100; // Increase the number of particles for a denser effect
+                const smokeColor = 'rgba(200, 200, 200, 0.5)'; // Light gray smoke
+
+                // Initialize particles across the entire canvas area
+                for (let i = 0; i < maxParticles; i++) {
+                    particles.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        size: Math.random() * 20 + 10,
+                        speedX: (Math.random() - 0.5) * 4,
+                        speedY: (Math.random() - 0.5) * 4,
+                        opacity: 1,
+                    });
+                }
+
+                // Smoke puff effect function
+                const smokePuff = () => {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                    // Draw the previous images (except the final one)
+                    for (let i = 0; i < imgElements.length - 1; i++) {
+                        ctx.drawImage(imgElements[i], 0, 0);
+                    }
+
+                    // Draw smoke particles
+                    particles.forEach(particle => {
+                        ctx.beginPath();
+                        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                        ctx.fillStyle = smokeColor.replace('0.5', particle.opacity); // Adjust opacity
+                        ctx.fill();
+
+                        // Update particle position
+                        particle.x += particle.speedX;
+                        particle.y += particle.speedY;
+                        particle.opacity -= 0.01; // Slow fade for longer effect
+
+                        // Gradually reduce size to simulate dispersion
+                        particle.size *= 0.99;
+                    });
+
+                    // Remove particles that are almost invisible
+                    for (let i = particles.length - 1; i >= 0; i--) {
+                        if (particles[i].opacity <= 0 || particles[i].size <= 1) {
+                            particles.splice(i, 1);
                         }
+                    }
+
+                    // Increase final image opacity
+                    opacity += 0.01; // Slow the reveal
+                    ctx.globalAlpha = opacity;
+                    ctx.drawImage(finalImage, 0, 0);
+                    ctx.globalAlpha = 1; // Reset alpha
+
+                    if (particles.length > 0 || opacity < 1) {
+                        requestAnimationFrame(smokePuff);
+                    } else {
+                        document.getElementById('imageCanvas').style.display = 'inline';
+                    }
+                };
+
+                // Start the smoke puff effect
+                smokePuff();
+
+                         }
                     };
                     img.onerror = () => {
                         console.error(`Error loading image from URL: ${url}`);
@@ -950,12 +1023,78 @@ function layerImages(variation) {
                         if (loadedImages === imageUrls.length) {
                             canvas.width = imgElements[0]?.width || 150;
                             canvas.height = imgElements[0]?.height || 150;
-                            imgElements.forEach(image => {
-                                if (image) {
-                                    ctx.drawImage(image, 0, 0);
-                                }
-                            });
-                            document.getElementById('imageCanvas').style.display = 'inline';
+                            // Draw all images except the final one
+                            for (let i = 0; i < imgElements.length - 1; i++) {
+                                ctx.drawImage(imgElements[i], 0, 0);
+                            }
+
+                                // Smoke particles for full-canvas effect
+                const finalImage = imgElements[imgElements.length - 1];
+                let opacity = 0;
+
+                const particles = [];
+                const maxParticles = 100; // Increase the number of particles for a denser effect
+                const smokeColor = 'rgba(200, 200, 200, 0.5)'; // Light gray smoke
+
+                // Initialize particles across the entire canvas area
+                for (let i = 0; i < maxParticles; i++) {
+                    particles.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        size: Math.random() * 20 + 10,
+                        speedX: (Math.random() - 0.5) * 4,
+                        speedY: (Math.random() - 0.5) * 4,
+                        opacity: 1,
+                    });
+                }
+
+                // Smoke puff effect function
+                const smokePuff = () => {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                    // Draw the previous images (except the final one)
+                    for (let i = 0; i < imgElements.length - 1; i++) {
+                        ctx.drawImage(imgElements[i], 0, 0);
+                    }
+
+                    // Draw smoke particles
+                    particles.forEach(particle => {
+                        ctx.beginPath();
+                        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                        ctx.fillStyle = smokeColor.replace('0.5', particle.opacity); // Adjust opacity
+                        ctx.fill();
+
+                        // Update particle position
+                        particle.x += particle.speedX;
+                        particle.y += particle.speedY;
+                        particle.opacity -= 0.01; // Slow fade for longer effect
+
+                        // Gradually reduce size to simulate dispersion
+                        particle.size *= 0.99;
+                    });
+
+                    // Remove particles that are almost invisible
+                    for (let i = particles.length - 1; i >= 0; i--) {
+                        if (particles[i].opacity <= 0 || particles[i].size <= 1) {
+                            particles.splice(i, 1);
+                        }
+                    }
+
+                    // Increase final image opacity
+                    opacity += 0.01; // Slow the reveal
+                    ctx.globalAlpha = opacity;
+                    ctx.drawImage(finalImage, 0, 0);
+                    ctx.globalAlpha = 1; // Reset alpha
+
+                    if (particles.length > 0 || opacity < 1) {
+                        requestAnimationFrame(smokePuff);
+                    } else {
+                        document.getElementById('imageCanvas').style.display = 'inline';
+                    }
+                };
+
+                // Start the smoke puff effect
+                smokePuff();
                         }
                     };
                 });
@@ -990,18 +1129,7 @@ function generateRandomImage() {
         }
     });
 
-    // Generate the image using the random variation
-    layerImages(variation).then(imageUrl => {
-        const canvas = document.getElementById('imageCanvas');
-        const ctx = canvas.getContext('2d');
-
-        const img = new Image();
-        img.src = imageUrl;
-        img.onload = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        };
-    });
+    document.getElementById('generate-btn').click();
 }
 
 
