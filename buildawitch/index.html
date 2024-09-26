@@ -928,6 +928,11 @@ function layerImages(variation) {
                 let imgElements = [];
 
                 imageUrls.forEach((url, index) => {
+                    if (!url || url === './images/.png') {
+                    console.error(`Invalid image URL: ${url}`);
+                    return; // or use continue if inside a traditional for loop
+                    }
+
                     const img = new Image();
                     img.src = url;
                     console.log(url);
@@ -939,9 +944,7 @@ function layerImages(variation) {
                             canvas.height = imgElements[0].height;
                             // Draw all images except the final one
                             for (let i = 0; i < imgElements.length - 1; i++) {
-                                if (url !== './images/.png') { // Check if image is loaded
                                     ctx.drawImage(imgElements[i], 0, 0);
-                                }
                             }
 
     // Create smoke particles for the final image reveal
@@ -970,9 +973,7 @@ function layerImages(variation) {
 
                     // Draw the previous images (except the final one)
                     for (let i = 0; i < imgElements.length - 1; i++) {
-                        if (url !== './images/.png') { // Check if image is loaded
-                                        ctx.drawImage(imgElements[i], 0, 0);
-                        }
+                        ctx.drawImage(imgElements[i], 0, 0);
                     }
 
                     // Draw smoke particles
@@ -1022,9 +1023,7 @@ function layerImages(variation) {
                             canvas.height = imgElements[0]?.height || 150;
                             // Draw all images except the final one
                             for (let i = 0; i < imgElements.length - 1; i++) {
-                                if (url !== './images/.png') { // Check if image is loaded
-                                    ctx.drawImage(imgElements[i], 0, 0);
-                                }
+                                ctx.drawImage(imgElements[i], 0, 0);
                             }
 
                             // Smoke effect for the final image
@@ -1037,9 +1036,7 @@ function layerImages(variation) {
 
                                 // Redraw all images before the final one
                                 for (let i = 0; i < imgElements.length - 1; i++) {
-                                    if (url !== './images/.png') { // Check if image is loaded
                                         ctx.drawImage(imgElements[i], 0, 0);
-                                     }
                                 }
 
                                 // Draw smoke effect (white to transparent)
