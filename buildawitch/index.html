@@ -947,19 +947,19 @@ function layerImages(variation) {
                                     ctx.drawImage(imgElements[i], 0, 0);
                             }
 
-    // Create smoke particles for the final image reveal
-    const finalImage = imgElements[imgElements.length - 1];
+        // Smoke particles for full-canvas effect
+        const finalImage = imgElements[imgElements.length - 1];
                 let opacity = 0;
 
                 const particles = [];
-                const maxParticles = 50;
+                const maxParticles = 100; // Increase the number of particles for a denser effect
                 const smokeColor = 'rgba(200, 200, 200, 0.5)'; // Light gray smoke
 
-                // Initialize particles
+                // Initialize particles across the entire canvas area
                 for (let i = 0; i < maxParticles; i++) {
                     particles.push({
-                        x: canvas.width / 2,
-                        y: canvas.height / 2,
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
                         size: Math.random() * 20 + 10,
                         speedX: (Math.random() - 0.5) * 4,
                         speedY: (Math.random() - 0.5) * 4,
@@ -986,10 +986,10 @@ function layerImages(variation) {
                         // Update particle position
                         particle.x += particle.speedX;
                         particle.y += particle.speedY;
-                        particle.opacity -= 0.02; // Fade out particle
+                        particle.opacity -= 0.01; // Slow fade for longer effect
 
                         // Gradually reduce size to simulate dispersion
-                        particle.size *= 0.98;
+                        particle.size *= 0.99;
                     });
 
                     // Remove particles that are almost invisible
@@ -1000,13 +1000,15 @@ function layerImages(variation) {
                     }
 
                     // Increase final image opacity
-                    opacity += 0.02;
+                    opacity += 0.01; // Slow the reveal
                     ctx.globalAlpha = opacity;
                     ctx.drawImage(finalImage, 0, 0);
                     ctx.globalAlpha = 1; // Reset alpha
 
                     if (particles.length > 0 || opacity < 1) {
                         requestAnimationFrame(smokePuff);
+                    } else {
+                        document.getElementById('imageCanvas').style.display = 'inline';
                     }
                 };
 
@@ -1026,44 +1028,73 @@ function layerImages(variation) {
                                 ctx.drawImage(imgElements[i], 0, 0);
                             }
 
-                            // Smoke effect for the final image
-                            const finalImage = imgElements[imgElements.length - 1];
-                            let opacity = 0; // Start with full transparency
+                                // Smoke particles for full-canvas effect
+                const finalImage = imgElements[imgElements.length - 1];
+                let opacity = 0;
 
-                            const smokeEffect = () => {
-                                // Clear final image area
-                                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const particles = [];
+                const maxParticles = 100; // Increase the number of particles for a denser effect
+                const smokeColor = 'rgba(200, 200, 200, 0.5)'; // Light gray smoke
 
-                                // Redraw all images before the final one
-                                for (let i = 0; i < imgElements.length - 1; i++) {
-                                        ctx.drawImage(imgElements[i], 0, 0);
-                                }
+                // Initialize particles across the entire canvas area
+                for (let i = 0; i < maxParticles; i++) {
+                    particles.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        size: Math.random() * 20 + 10,
+                        speedX: (Math.random() - 0.5) * 4,
+                        speedY: (Math.random() - 0.5) * 4,
+                        opacity: 1,
+                    });
+                }
 
-                                // Draw smoke effect (white to transparent)
-                                const gradient = ctx.createRadialGradient(
-                                    canvas.width / 2, canvas.height / 2, 10,
-                                    canvas.width / 2, canvas.height / 2, canvas.width / 1.5
-                                );
-                                gradient.addColorStop(0, `rgba(255, 255, 255, ${1 - opacity})`);
-                                gradient.addColorStop(1, `rgba(255, 255, 255, 0)`);
+                // Smoke puff effect function
+                const smokePuff = () => {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-                                ctx.fillStyle = gradient;
-                                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    // Draw the previous images (except the final one)
+                    for (let i = 0; i < imgElements.length - 1; i++) {
+                        ctx.drawImage(imgElements[i], 0, 0);
+                    }
 
-                                // Draw final image with increasing opacity
-                                ctx.globalAlpha = opacity;
-                                ctx.drawImage(finalImage, 0, 0);
-                                ctx.globalAlpha = 1; // Reset alpha for future draws
+                    // Draw smoke particles
+                    particles.forEach(particle => {
+                        ctx.beginPath();
+                        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                        ctx.fillStyle = smokeColor.replace('0.5', particle.opacity); // Adjust opacity
+                        ctx.fill();
 
-                                // Increase opacity to reveal the final image gradually
-                                opacity += 0.02; // Adjust this value for speed
-                                if (opacity <= 1) {
-                                    requestAnimationFrame(smokeEffect);
-                                }
-                            };
+                        // Update particle position
+                        particle.x += particle.speedX;
+                        particle.y += particle.speedY;
+                        particle.opacity -= 0.01; // Slow fade for longer effect
 
-                            // Start the smoke effect for the final image
-                            smokeEffect();
+                        // Gradually reduce size to simulate dispersion
+                        particle.size *= 0.99;
+                    });
+
+                    // Remove particles that are almost invisible
+                    for (let i = particles.length - 1; i >= 0; i--) {
+                        if (particles[i].opacity <= 0 || particles[i].size <= 1) {
+                            particles.splice(i, 1);
+                        }
+                    }
+
+                    // Increase final image opacity
+                    opacity += 0.01; // Slow the reveal
+                    ctx.globalAlpha = opacity;
+                    ctx.drawImage(finalImage, 0, 0);
+                    ctx.globalAlpha = 1; // Reset alpha
+
+                    if (particles.length > 0 || opacity < 1) {
+                        requestAnimationFrame(smokePuff);
+                    } else {
+                        document.getElementById('imageCanvas').style.display = 'inline';
+                    }
+                };
+
+                // Start the smoke puff effect
+                smokePuff();
                         }
                     };
                 });
