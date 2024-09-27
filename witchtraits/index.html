@@ -98,21 +98,63 @@
 </body>
 <script>
 
-    async function load() {
-        const witchJson = await getWitchJson();
-        witchJson.sort((a, b) => parseInt(a.i, 10) - parseInt(b.i, 10));
-        populateWitchesGrid(witchJson);
-    }
 
     async function getWitchJson() {
         const response = await fetch('https://loopers.blob.core.windows.net/taprootwitches/witches.json');
         return await response.json();
     }
+    let currentBatch = 0;
+    const batchSize = 20; // Number of grid items to load per batch
+    let witchJson = [];
 
-    function populateWitchesGrid(witchData) {
+    async function load() {
+        witchJson = await getWitchJson();
+        witchJson.sort((a, b) => parseInt(a.i, 10) - parseInt(b.i, 10));
+        loadNextBatch(); // Load the initial batch
+    }
+
+    function loadNextBatch() {
+        // Get the next batch of items from the witchJson array
+        const batch = witchJson.slice(currentBatch, currentBatch + batchSize);
+        populateWitchesGrid(batch);
+
+        // Update the current position
+        currentBatch += batchSize;
+
+        // If there are more items to load, add observer
+        if (currentBatch < witchJson.length) {
+            addGridLoadObserver();
+        }
+    }
+
+    function addGridLoadObserver() {
+        const loadMoreTrigger = document.createElement('div');
+        loadMoreTrigger.className = 'load-more-trigger';
+        document.getElementById('witches-grid').appendChild(loadMoreTrigger);
+
+        const observerOptions = {
+            root: null, // Use viewport as root
+            rootMargin: '200px', // Start loading before the user reaches the end
+            threshold: 0.1 // Trigger when 10% of the element is visible
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    observer.unobserve(entry.target); // Stop observing
+                    entry.target.remove(); // Remove the trigger element
+                    loadNextBatch(); // Load the next batch
+                }
+            });
+        }, observerOptions);
+
+        observer.observe(loadMoreTrigger);
+    }
+
+    function populateWitchesGrid(batch) {
         const container = document.getElementById('witches-grid');
 
-        witchData.forEach(witch => {
+        batch.forEach(witch => {
             //Witch Div
             const witchContainer = document.createElement('div');
             witchContainer.classList.add('col-3', 'text-center', 'mb-4');
@@ -127,21 +169,21 @@
             img.dataset.src = `https://loopers.blob.core.windows.net/taprootwitches/images/${witch.i}.png`;
             img.classList.add('lazy-witch', 'img-fluid');
 
-            //Put them babies together
+            //Put them together
             witchContainer.appendChild(title);
             witchContainer.appendChild(img);
 
-            //Slam that container into the grid
+            //Append to the grid
             container.appendChild(witchContainer);
         });
 
+        // Apply lazy loading to the newly added images
         lazyLoadImages();
     }
 
     function lazyLoadImages() {
         const lazyImages = document.querySelectorAll('.lazy-witch');
 
-        // Adjust the options to load images only when they are more visible
         const observerOptions = {
             root: null, // Use the viewport as the default root
             rootMargin: '0px', // Margin around the root (adjust if necessary)
@@ -163,8 +205,8 @@
             imageObserver.observe(image);
         });
     }
-
     load();
+
 </script>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
