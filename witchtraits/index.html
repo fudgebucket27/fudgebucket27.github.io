@@ -233,6 +233,7 @@
         // Set filtered array to initially contain all items
         filteredWitchJson = [...witchJson];
         createTraitDropdowns();
+        updateTraitDropdowns(); 
 
         loadNextBatch(); // Load the initial batch
 
@@ -482,12 +483,64 @@
             return true; // Include the witch if all filters match
         });
 
+        // Update dropdown options based on the filtered witches
+        updateTraitDropdowns();
+
         // Reset the grid and current batch
         currentBatch = 0;
         document.getElementById('witches-grid').innerHTML = ''; // Clear current grid
 
         loadNextBatch(); // Load the filtered batch
     }
+
+
+    function updateTraitDropdowns() {
+        const traits = ['Background', 'Robe', 'Hat', 'Face', 'Skin', 'Hair', 'Wand', 'Special', 'Moon'];
+
+        traits.forEach(traitName => {
+            const select = document.getElementById(`${traitName}Trait`);
+
+            // Save the current selected value
+            const currentValue = select.value;
+
+            // Create a map to count occurrences of each trait value
+            const traitCounts = new Map();
+
+            // Calculate counts based on the currently filtered witches
+            filteredWitchJson.forEach(witch => {
+                if (witch.t[traitName] && witch.t[traitName].v) {
+                    const value = witch.t[traitName].v;
+                    if (traitCounts.has(value)) {
+                        traitCounts.set(value, traitCounts.get(value) + 1);
+                    } else {
+                        traitCounts.set(value, 1);
+                    }
+                }
+            });
+
+            // Clear current options
+            select.innerHTML = '';
+            const allOption = document.createElement('option');
+            allOption.value = '';
+            allOption.innerText = 'All';
+            select.appendChild(allOption);
+
+            // Populate the dropdown with unique trait values and their counts
+            Array.from(traitCounts.keys()).sort().forEach(value => {
+                const count = traitCounts.get(value);
+                const option = document.createElement('option');
+                option.value = value;
+                option.innerText = `${value} (${count})`; // Display value with count
+                select.appendChild(option);
+            });
+
+            // Restore the previously selected value, or fallback to "All" if not available
+            select.value = currentValue || '';
+        });
+    }
+
+
+
     load();
 </script>
 
