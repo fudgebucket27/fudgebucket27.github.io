@@ -167,7 +167,7 @@
                         <div class="row">
                             <!-- Witch Image -->
                             <div class="col-12 col-md-4 witch-image-container mb-3 text-center">
-                                <img id="modalWitchImage" src="" alt="Witch Image" class="img-fluid">
+                                <img id="modalWitchImage" src="" alt="Witch Image" class="img-fluid rounded">
                                 <h5 class="modal-title text-center" id="witchModalLabel">Taproot Witch Details</h5>
                             </div>
                             <!-- Witch Traits -->
@@ -294,7 +294,7 @@
             //Image
             const img = document.createElement('img');
             img.dataset.src = `https://loopers.blob.core.windows.net/taprootwitches/images/${witch.i}.png`;
-            img.classList.add('lazy-witch', 'img-fluid');
+            img.classList.add('lazy-witch', 'img-fluid', 'rounded');
 
             // Add click event to open modal with witch details
             img.addEventListener('click', () => openWitchModal(witch));
