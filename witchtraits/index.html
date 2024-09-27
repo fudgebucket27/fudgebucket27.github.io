@@ -142,56 +142,74 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
             /* Light bottom border for rows */
         }
+
+        #traitFilter {
+            background-color: #3e0949 !important;
+        }
     </style>
 </head>
 
 <body>
-    <div class="container">
+    <div class="container-fluid">
         <h1 class="header">Taproot Witch Trait Guide</h1>
         <!-- Search Box -->
         <div class="form-group">
             <input type="text" id="searchBox" class="form-control" placeholder="Search by Witch ID...">
         </div>
 
-        <!-- Grid -->
-        <div class="row" id="witches-grid"></div>
-    </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="witchModal" tabindex="-1" role="dialog" aria-labelledby="witchModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <!-- Witch Image -->
-                            <div class="col-12 col-md-4 witch-image-container mb-3 text-center">
-                                <img id="modalWitchImage" src="" alt="Witch Image" class="img-fluid rounded">
-                                <h5 class="modal-title text-center" id="witchModalLabel">Taproot Witch Details</h5>
-                            </div>
-                            <!-- Witch Traits -->
-                            <div class="col-12 col-md-8 witch-traits">
-                                <table id="modalWitchTraitsTable" class="table table-borderless text-white">
-                                    <thead>
-                                        <tr>
-                                            <th>Trait</th>
-                                            <th>Value</th>
-                                            <th>Count</th>
-                                            <th>%</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <!-- Rows will be populated dynamically -->
-                                    </tbody>
-                                </table>
+        <div class="row">
+            <!-- Trait Filter Sidebar -->
+            <div class="col-12 col-md-3 mb-4">
+                <div id="traitFilter" class="bg-light p-3 rounded">
+                    <h5>Filter Traits</h5>
+                    <!-- Dropdowns will be added dynamically here -->
+                </div>
+            </div>
+
+            <!-- Grid Display Area -->
+            <div class="col-12 col-md-9">
+                <div class="row" id="witches-grid">
+                    <!-- Witch items will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="witchModal" tabindex="-1" role="dialog" aria-labelledby="witchModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <!-- Witch Image -->
+                                <div class="col-12 col-md-4 witch-image-container mb-3 text-center">
+                                    <img id="modalWitchImage" src="" alt="Witch Image" class="img-fluid rounded">
+                                    <h5 class="modal-title text-center" id="witchModalLabel">Taproot Witch Details</h5>
+                                </div>
+                                <!-- Witch Traits -->
+                                <div class="col-12 col-md-8 witch-traits">
+                                    <table id="modalWitchTraitsTable" class="table table-borderless text-white">
+                                        <thead>
+                                            <tr>
+                                                <th>Trait</th>
+                                                <th>Value</th>
+                                                <th>Count</th>
+                                                <th>%</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Rows will be populated dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
 </body>
 <script>
@@ -214,6 +232,7 @@
 
         // Set filtered array to initially contain all items
         filteredWitchJson = [...witchJson];
+        createTraitDropdowns();
 
         loadNextBatch(); // Load the initial batch
 
@@ -382,8 +401,94 @@
         $('#witchModal').modal('show');
     }
 
-    load();
+    function getUniqueTraitValues(traitName) {
+        const values = new Set(); // Use a Set to store unique values
 
+        witchJson.forEach(witch => {
+            if (witch.t[traitName] && witch.t[traitName].v) {
+                values.add(witch.t[traitName].v); // Add trait value to Set
+            }
+        });
+
+        return Array.from(values).sort(); // Convert Set to Array and sort
+    }
+
+    // Dynamically create trait dropdowns
+    function createTraitDropdowns() {
+        const traits = ['Background', 'Robe', 'Hat', 'Face', 'Skin', 'Hair', 'Wand', 'Special', 'Moon']; // Add other traits as needed
+        const filterContainer = document.getElementById('traitFilter');
+
+        traits.forEach(traitName => {
+            // Get unique values for the current trait
+            const traitValues = getUniqueTraitValues(traitName);
+
+            // Create a form group for the dropdown
+            const formGroup = document.createElement('div');
+            formGroup.classList.add('form-group');
+
+            // Create a label for the dropdown
+            const label = document.createElement('label');
+            label.setAttribute('for', `${traitName}Trait`);
+            label.innerText = traitName;
+
+            // Create the select dropdown
+            const select = document.createElement('select');
+            select.id = `${traitName}Trait`;
+            select.classList.add('form-control');
+
+            // Add an 'All' option to the dropdown
+            const allOption = document.createElement('option');
+            allOption.value = '';
+            allOption.innerText = 'All';
+            select.appendChild(allOption);
+
+            // Populate the dropdown with unique trait values
+            traitValues.forEach(value => {
+                const option = document.createElement('option');
+                option.value = value;
+                option.innerText = value;
+                select.appendChild(option);
+            });
+
+            // Add the label and select to the form group
+            formGroup.appendChild(label);
+            formGroup.appendChild(select);
+
+            // Add the form group to the filter container
+            filterContainer.appendChild(formGroup);
+
+            // Add event listener for filtering
+            select.addEventListener('change', applyTraitFilter);
+        });
+    }
+
+    function applyTraitFilter() {
+        // Get all dropdowns inside the filter container
+        const dropdowns = document.querySelectorAll('#traitFilter select');
+
+        // Filter witches based on selected trait values
+        filteredWitchJson = witchJson.filter(witch => {
+            // Check all dropdowns for selected values
+            for (const dropdown of dropdowns) {
+                const traitName = dropdown.id.replace('Trait', ''); // Extract trait name from dropdown ID
+                const selectedValue = dropdown.value;
+
+                // If a dropdown has a selected value and it doesn't match the witch's trait, exclude it
+                if (selectedValue && witch.t[traitName].v !== selectedValue) {
+                    return false;
+                }
+            }
+
+            return true; // Include the witch if all filters match
+        });
+
+        // Reset the grid and current batch
+        currentBatch = 0;
+        document.getElementById('witches-grid').innerHTML = ''; // Clear current grid
+
+        loadNextBatch(); // Load the filtered batch
+    }
+    load();
 </script>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
