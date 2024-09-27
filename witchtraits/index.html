@@ -86,6 +86,59 @@
         .witch-title {
             font-family: 'HelveticaNeuMedium', sans-serif;
         }
+
+        /* Set the background color for the modal */
+        #witchModal .modal-content {
+            background-color: rgb(186, 54, 191);
+            /* Set the desired background color */
+            color: white;
+            /* Ensure the text color is white for contrast */
+        }
+
+
+        #witchModal .modal-body {
+            background-color: rgb(186, 54, 191);
+            /* Match the background color */
+        }
+
+
+        #witchModal .modal-header {
+            background-color: rgb(186, 54, 191);
+            /* Match the header background */
+            border-bottom: none;
+            /* Remove bottom border */
+        }
+
+        #witchModal .close {
+            color: white;
+            /* Set close button color */
+            opacity: 1;
+            /* Ensure visibility */
+        }
+
+        /* Remove vertical lines and customize the table appearance */
+        #modalWitchTraitsTable {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        #modalWitchTraitsTable th,
+        #modalWitchTraitsTable td {
+            border: none;
+            /* Remove vertical borders */
+            padding: 8px;
+            /* Add padding */
+        }
+
+        #modalWitchTraitsTable th {
+            text-align: left;
+            font-weight: bold;
+        }
+
+        #modalWitchTraitsTable tbody tr {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            /* Light bottom border for rows */
+        }
     </style>
 </head>
 
@@ -100,11 +153,53 @@
         <!-- Grid -->
         <div class="row" id="witches-grid"></div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="witchModal" tabindex="-1" role="dialog" aria-labelledby="witchModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="witchModalLabel">Taproot Witch Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <!-- Witch Image -->
+                            <div class="col-12 col-md-4 witch-image-container mb-3">
+                                <img id="modalWitchImage" src="" alt="Witch Image" class="img-fluid">
+                            </div>
+                            <!-- Witch Traits -->
+                            <div class="col-12 col-md-8 witch-traits">
+                                <table id="modalWitchTraitsTable" class="table table-borderless text-white">
+                                    <thead>
+                                        <tr>
+                                            <th>Trait</th>
+                                            <th>Value</th>
+                                            <th>Count</th>
+                                            <th>%</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Rows will be populated dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>
+
 </body>
 <script>
 
     let currentBatch = 0;
-    const batchSize = 20; // Number of grid items to load per batch
+    const batchSize = 5; // Number of grid items to load per batch
     let witchJson = [];
     let filteredWitchJson = []; // To store filtered data
     let debounceTimeout; // To keep track of the timeout
@@ -128,24 +223,24 @@
         document.getElementById('searchBox').addEventListener('input', handleSearch);
     }
 
-  function handleSearch() {
-    const searchTerm = document.getElementById('searchBox').value.trim();
-    
-    // Clear the previous timeout
-    clearTimeout(debounceTimeout);
+    function handleSearch() {
+        const searchTerm = document.getElementById('searchBox').value.trim();
 
-    // Set a new timeout to trigger the filter after 1 second
-    debounceTimeout = setTimeout(() => {
-        // Filter witchJson based on the search term
-        filteredWitchJson = witchJson.filter(witch => witch.i.toString().includes(searchTerm));
+        // Clear the previous timeout
+        clearTimeout(debounceTimeout);
 
-        // Reset the grid and current batch
-        currentBatch = 0;
-        document.getElementById('witches-grid').innerHTML = ''; // Clear current grid
-        
-        loadNextBatch(); // Load the filtered batch
-    }, 1000); // Delay by 1000 milliseconds (1 second)
-}
+        // Set a new timeout to trigger the filter after 1 second
+        debounceTimeout = setTimeout(() => {
+            // Filter witchJson based on the search term
+            filteredWitchJson = witchJson.filter(witch => witch.i.toString().includes(searchTerm));
+
+            // Reset the grid and current batch
+            currentBatch = 0;
+            document.getElementById('witches-grid').innerHTML = ''; // Clear current grid
+
+            loadNextBatch(); // Load the filtered batch
+        }, 1000); // Delay by 1000 milliseconds (1 second)
+    }
 
     function loadNextBatch() {
         // Get the next batch of items from the witchJson array
@@ -203,6 +298,9 @@
             img.dataset.src = `https://loopers.blob.core.windows.net/taprootwitches/images/${witch.i}.png`;
             img.classList.add('lazy-witch', 'img-fluid');
 
+            // Add click event to open modal with witch details
+            img.addEventListener('click', () => openWitchModal(witch));
+
             //Put them together
             witchContainer.appendChild(title);
             witchContainer.appendChild(img);
@@ -239,6 +337,53 @@
             imageObserver.observe(image);
         });
     }
+
+    function openWitchModal(witch) {
+        // Set modal title
+        document.getElementById('witchModalLabel').innerText = `Taproot Witch #${witch.i}`;
+
+        // Set the witch image in the modal
+        const modalImage = document.getElementById('modalWitchImage');
+        modalImage.src = `https://loopers.blob.core.windows.net/taprootwitches/images/${witch.i}.png`;
+
+        // Clear the existing table rows
+        const traitsTableBody = document.querySelector('#modalWitchTraitsTable tbody');
+        traitsTableBody.innerHTML = '';
+
+        // Populate table rows with traits
+        for (const [trait, details] of Object.entries(witch.t)) {
+            const row = document.createElement('tr');
+
+            // Trait name cell
+            const traitCell = document.createElement('td');
+            traitCell.innerText = trait;
+
+            // Trait value cell
+            const valueCell = document.createElement('td');
+            valueCell.innerText = details.v === "" ? "None ": details.v;
+
+            // Count cell
+            const occurrencesCell = document.createElement('td');
+            occurrencesCell.innerText = details.o;
+
+            // % cell
+            const probabilityCell = document.createElement('td');
+            probabilityCell.innerText = details.p.replace("%", "");
+
+            // Append cells to row
+            row.appendChild(traitCell);
+            row.appendChild(valueCell);
+            row.appendChild(occurrencesCell);
+            row.appendChild(probabilityCell);
+
+            // Append row to table body
+            traitsTableBody.appendChild(row);
+        }
+
+        // Show the modal
+        $('#witchModal').modal('show');
+    }
+
     load();
 
 </script>
