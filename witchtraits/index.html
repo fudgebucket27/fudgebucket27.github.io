@@ -316,6 +316,8 @@
             const img = document.createElement('img');
             img.dataset.src = `https://loopers.blob.core.windows.net/taprootwitches/images/${witch.i}.png`;
             img.classList.add('lazy-witch', 'img-fluid', 'rounded');
+            img.style.cursor = 'pointer'; 
+
 
             // Add click event to open modal with witch details
             img.addEventListener('click', () => openWitchModal(witch));
