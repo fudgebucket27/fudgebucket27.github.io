@@ -51,7 +51,9 @@
             font-family: 'HelveticaNeuMedium', sans-serif;
         }
 
-        .witch-title, label, #filterTitle {
+        .witch-title,
+        label,
+        #filterTitle {
             font-family: 'HelveticaNeuMedium', sans-serif;
         }
 
@@ -118,6 +120,10 @@
         .btn-primary {
             font-family: 'HelveticaNeuMedium', sans-serif;
         }
+
+        .modal-footer {
+            border-top: none;
+        }
     </style>
 </head>
 
@@ -136,7 +142,7 @@
                 <div id="traitFilter" class="bg-light p-3 rounded d-flex flex-column">
                     <h5 id="filterTitle">Filter Traits</h5>
                     <!-- Dropdowns will be added dynamically here -->
-                    
+
                     <!-- Clear Filters Button -->
                     <button id="clearFiltersBtn" class="btn btn-primary mt-3 w-100 mt-auto">Clear Filters</button>
                 </div>
@@ -187,6 +193,10 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Modal Footer -->
+                    <div class="modal-footer">
+                        <button id="magicEdenBtn" class="btn btn-danger">Buy on Magic Eden</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -223,7 +233,7 @@
 
 
     async function getWitchJson() {
-        const response = await fetch('https://loopers.blob.core.windows.net/taprootwitches/witches.json');
+        const response = await fetch('https://loopers.blob.core.windows.net/taprootwitches/witchesv2.json');
         return await response.json();
     }
 
@@ -316,7 +326,7 @@
             const img = document.createElement('img');
             img.dataset.src = `https://loopers.blob.core.windows.net/taprootwitches/images/${witch.i}.png`;
             img.classList.add('lazy-witch', 'img-fluid', 'rounded');
-            img.style.cursor = 'pointer'; 
+            img.style.cursor = 'pointer';
 
 
             // Add click event to open modal with witch details
@@ -400,6 +410,13 @@
             // Append row to table body
             traitsTableBody.appendChild(row);
         }
+
+        // Set up the external link button to open a new window with the witch ID in the URL
+        const externalLinkBtn = document.getElementById('magicEdenBtn');
+        externalLinkBtn.onclick = () => {
+            const url = `https://magiceden.io/ordinals/item-details/${witch.ii}`; // Replace with your target URL
+            window.open(url, '_blank'); // Open in a new tab
+        };
 
         // Show the modal
         $('#witchModal').modal('show');
