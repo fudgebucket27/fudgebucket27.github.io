@@ -145,11 +145,19 @@
 
                     <!-- Clear Filters Button -->
                     <button id="clearFiltersBtn" class="btn btn-primary mt-3 w-100 mt-auto">Clear Filters</button>
+
                 </div>
             </div>
 
+
+
+
             <!-- Grid Display Area -->
             <div class="col-12 col-md-9">
+                <!-- Spinner Container -->
+                <div id="loadingSpinner" class="spinner-border text-light" role="status" style="display: none;"> 
+                    <span class="sr-only">Loading...</span>
+                </div>
                 <div class="row" id="witches-grid">
                     <!-- Witch items will be dynamically added here -->
                 </div>
@@ -238,18 +246,33 @@
     }
 
     async function load() {
-        witchJson = await getWitchJson();
-        witchJson.sort((a, b) => parseInt(a.i, 10) - parseInt(b.i, 10));
+        // Show spinner
+        document.getElementById('loadingSpinner').style.display = 'flex';
 
-        // Set filtered array to initially contain all items
-        filteredWitchJson = [...witchJson];
-        createTraitDropdowns();
-        updateTraitDropdowns();
+        try {
+            witchJson = await getWitchJson();
+            witchJson.sort((a, b) => parseInt(a.i, 10) - parseInt(b.i, 10));
 
-        loadNextBatch(); // Load the initial batch
+            // Set filtered array to initially contain all items
+            filteredWitchJson = [...witchJson];
 
-        // Add listener to search box
-        document.getElementById('searchBox').addEventListener('input', handleSearch);
+            // Create trait dropdowns based on initial data
+            createTraitDropdowns();
+
+            // Update dropdown options to include count
+            updateTraitDropdowns(); // Ensure counts are correct on initial load
+
+            // Load the initial batch of witches
+            loadNextBatch();
+
+            // Add listener to search box
+            document.getElementById('searchBox').addEventListener('input', handleSearch);
+        } catch (error) {
+            console.error('Error loading data:', error);
+        } finally {
+            // Hide spinner after data is loaded
+            document.getElementById('loadingSpinner').style.display = 'none';
+        }
     }
 
     function handleSearch() {
