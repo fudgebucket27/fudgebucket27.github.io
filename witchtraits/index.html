@@ -51,7 +51,7 @@
             font-family: 'HelveticaNeuMedium', sans-serif;
         }
 
-        .witch-title {
+        .witch-title, label, #filterTitle {
             font-family: 'HelveticaNeuMedium', sans-serif;
         }
 
@@ -114,6 +114,10 @@
         #traitFilter {
             background-color: #3e0949 !important;
         }
+
+        .btn-primary {
+            font-family: 'HelveticaNeuMedium', sans-serif;
+        }
     </style>
 </head>
 
@@ -130,7 +134,7 @@
             <!-- Trait Filter Sidebar -->
             <div class="col-12 col-md-3 mb-4">
                 <div id="traitFilter" class="bg-light p-3 rounded d-flex flex-column">
-                    <h5>Filter Traits</h5>
+                    <h5 id="filterTitle">Filter Traits</h5>
                     <!-- Dropdowns will be added dynamically here -->
                     
                     <!-- Clear Filters Button -->
