@@ -752,7 +752,14 @@
                 const selectedValue = document.getElementById(layer.toLowerCase()).value;
                 if (layer === 'Moon') {
                     // Special handling for Moon
-                    const [moonType, moonPhase] = selectedValue.split('-');
+                    let [moonType, moonPhase] = selectedValue.split('-');
+
+                    if(moonPhase === undefined)
+                    {
+                        moonType = "Normal";
+                        moonPhase = "New Moon";
+                    }
+
 
                     // Trim whitespace
                     const trimmedMoonType = moonType.trim();
