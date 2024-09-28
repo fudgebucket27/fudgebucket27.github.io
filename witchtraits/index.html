@@ -130,6 +130,10 @@
         .modal-body {
             padding: 0px;
         }
+
+        #collapseToggleBtn {
+            font-family: 'HelveticaNeuMedium', sans-serif;
+        }
     </style>
 </head>
 
@@ -142,26 +146,33 @@
         </div>
 
 
+
         <div class="row">
             <!-- Trait Filter Sidebar -->
             <div class="col-12 col-md-3 mb-4">
-                <div id="traitFilter" class="bg-light p-3 rounded d-flex flex-column">
-                    <h5 id="filterTitle">Filter Traits</h5>
-                    <!-- Dropdowns will be added dynamically here -->
+                <!-- Collapse button only visible on mobile devices (small screens) -->
+                <button class="btn btn-primary d-md-none mb-2" type="button" data-toggle="collapse"
+                    data-target="#traitFilterCollapse" aria-expanded="false" aria-controls="traitFilterCollapse"
+                    id="collapseToggleBtn">
+                    Filter Traits
+                </button>
 
-                    <!-- Clear Filters Button -->
-                    <button id="clearFiltersBtn" class="btn btn-primary mt-3 w-100 mt-auto">Clear Filters</button>
+                <!-- Collapsible div for trait filter -->
+                <div id="traitFilterCollapse" class="collapse d-md-block">
+                    <div id="traitFilter" class="bg-light p-3 rounded d-flex flex-column">
+                        <h5 id="filterTitle">Filter Traits</h5>
+                        <!-- Dropdowns will be added dynamically here -->
 
+                        <!-- Clear Filters Button -->
+                        <button id="clearFiltersBtn" class="btn btn-primary mt-3 w-100 mt-auto">Clear Filters</button>
+                    </div>
                 </div>
             </div>
-
-
-
 
             <!-- Grid Display Area -->
             <div class="col-12 col-md-9">
                 <!-- Spinner Container -->
-                <div id="loadingSpinner" class="spinner-border text-light" role="status" style="display: none;"> 
+                <div id="loadingSpinner" class="spinner-border text-light" role="status" style="display: none;">
                     <span class="sr-only">Loading...</span>
                 </div>
                 <div class="row" id="witches-grid">
@@ -190,7 +201,8 @@
                                 </div>
                                 <!-- Witch Traits -->
                                 <div class="col-12 col-md-8 witch-traits">
-                                    <table id="modalWitchTraitsTable" class="table table-sm table-borderless text-white">
+                                    <table id="modalWitchTraitsTable"
+                                        class="table table-sm table-borderless text-white">
                                         <thead>
                                             <tr>
                                                 <th>Trait</th>
