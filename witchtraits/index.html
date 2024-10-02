@@ -287,7 +287,7 @@
         // Reset the grid and current batch
         currentBatch = 0;
         document.getElementById('witches-grid').innerHTML = ''; // Clear current grid
-
+        applyTraitFilter();
         // Load filtered data based on the checkbox state
         loadNextBatch();
     });
@@ -321,8 +321,8 @@
             //Mapping the price to witch
             const priceMap = new Map(priceJson.map(item => [item.i, item.p]));
             witchJson = witchJson.map(witch => {
-                // Find the price using the witch's ID, default to 0 if not found
-                witch.p = priceMap.get(witch.i) || 0;
+                // Ensure price mapping is correct
+                witch.p = priceMap.has(witch.i) ? priceMap.get(witch.i) : 0;
                 return witch;
             });
             witchJson.sort((a, b) => parseInt(a.i, 10) - parseInt(b.i, 10));
@@ -385,27 +385,18 @@
     }
 
     function sortAndFilterWitches() {
-        const showListedOnly = document.getElementById('showListedOnly').checked;
-        let witchesToSort = [...witchJson];
+        let witchesToSort = [...filteredWitchJson]; // Use filteredWitchJson instead of witchJson
 
-        // Apply trait filters
-        const dropdowns = document.querySelectorAll('#traitFilter select:not(#sortOptions)');
-        witchesToSort = witchesToSort.filter(witch => {
-            for (const dropdown of dropdowns) {
-                const traitName = dropdown.id.replace('Trait', ''); // Extract trait name from dropdown ID
-                const selectedValue = dropdown.value;
-
-                // Ensure the trait exists and matches the selected value
-                if (selectedValue && (!witch.t[traitName] || witch.t[traitName].v !== selectedValue)) {
-                    return false;
-                }
-            }
-            // Apply "Show Listed Only" filter
-            return !(showListedOnly && witch.p === 0);
-        });
-
-        // Sort the filtered witches based on the selected sort option
+        // Get the sort option
         const sortOption = document.getElementById('sortOptions').value;
+
+        // Apply "Show Listed Only" filter if checked
+        const showListedOnly = document.getElementById('showListedOnly').checked;
+        if (showListedOnly) {
+            witchesToSort = witchesToSort.filter(witch => witch.p !== 0);
+        }
+
+        // Sort the witches
         witchesToSort.sort((a, b) => {
             if (sortOption === 'price-asc') return a.p - b.p;
             if (sortOption === 'price-desc') return b.p - a.p;
@@ -416,6 +407,7 @@
 
         return witchesToSort;
     }
+
 
 
 
@@ -669,6 +661,7 @@
 
 
     function updateTraitDropdowns() {
+        const showListedOnly = document.getElementById('showListedOnly').checked; // Add this line
         const traits = ['Background', 'Robe', 'Hat', 'Face', 'Skin', 'Hair', 'Wand', 'Special', 'Moon'];
 
         traits.forEach(traitName => {
