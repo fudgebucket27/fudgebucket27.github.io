@@ -134,6 +134,14 @@
         #collapseToggleBtn {
             font-family: 'HelveticaNeuMedium', sans-serif;
         }
+
+        .lazy-witch img {
+            transition: transform 0.3s ease;
+        }
+
+        .lazy-witch img:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 
@@ -165,6 +173,24 @@
 
                         <!-- Clear Filters Button -->
                         <button id="clearFiltersBtn" class="btn btn-primary mt-3 w-100 mt-auto">Clear Filters</button>
+
+                        <!-- Show Listed or All Toggle -->
+                        <div class="form-check form-switch mt-3">
+                            <input type="checkbox" class="form-check-input" id="showListedOnly">
+                            <label class="form-check-label" for="showListedOnly">Show Listed Only</label>
+                        </div>
+
+                        <!-- Sorting Options -->
+                        <div class="form-group mt-3">
+                            <label for="sortOptions">Sort By:</label>
+                            <select id="sortOptions" class="form-control">
+                                <option value="id-asc">ID Ascending</option>
+                                <option value="id-desc">ID Descending</option>
+                                <option value="price-asc">Price Ascending</option>
+                                <option value="price-desc">Price Descending</option>
+                            </select>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -235,6 +261,7 @@
     let witchJson = [];
     let filteredWitchJson = []; // To store filtered data
     let debounceTimeout; // To keep track of the timeout
+    let priceJson = [];
 
     document.getElementById('clearFiltersBtn').addEventListener('click', () => {
         // Clear all dropdowns to "All"
@@ -256,10 +283,53 @@
         loadNextBatch(); // Load the full batch
     });
 
+    document.getElementById('showListedOnly').addEventListener('change', () => {
+        // Reset the grid and current batch
+        currentBatch = 0;
+        document.getElementById('witches-grid').innerHTML = ''; // Clear current grid
 
+        // Load filtered data based on the checkbox state
+        loadNextBatch();
+    });
+
+    document.getElementById('sortOptions').addEventListener('change', () => {
+        // Reset the grid and current batch
+        currentBatch = 0;
+        document.getElementById('witches-grid').innerHTML = ''; // Clear current grid
+
+        // Sort the data before loading the next batch
+        sortWitchData();
+        loadNextBatch();
+    });
+
+    function sortWitchData() {
+        const sortOption = document.getElementById('sortOptions').value;
+
+        switch (sortOption) {
+            case 'id-asc':
+                filteredWitchJson.sort((a, b) => a.i - b.i);
+                break;
+            case 'id-desc':
+                filteredWitchJson.sort((a, b) => b.i - a.i);
+                break;
+            case 'price-asc':
+                filteredWitchJson.sort((a, b) => a.p - b.p);
+                break;
+            case 'price-desc':
+                filteredWitchJson.sort((a, b) => b.p - a.p);
+                break;
+            default:
+                break;
+        }
+    }
 
     async function getWitchJson() {
         const response = await fetch('https://loopers.azureedge.net/taprootwitches/witchesv2.json');
+        return await response.json();
+    }
+
+    async function getPriceJson() {
+        const response = await fetch('https://loopers.blob.core.windows.net/taprootwitches/prices.json');
         return await response.json();
     }
 
@@ -268,7 +338,16 @@
         document.getElementById('loadingSpinner').style.display = 'flex';
 
         try {
+            priceJson = await getPriceJson();
             witchJson = await getWitchJson();
+
+            //Mapping the price to witch
+            const priceMap = new Map(priceJson.map(item => [item.i, item.p]));
+            witchJson = witchJson.map(witch => {
+                // Find the price using the witch's ID, default to 0 if not found
+                witch.p = priceMap.get(witch.i) || 0;
+                return witch;
+            });
             witchJson.sort((a, b) => parseInt(a.i, 10) - parseInt(b.i, 10));
 
             // Set filtered array to initially contain all items
@@ -313,8 +392,16 @@
     }
 
     function loadNextBatch() {
+        const showListedOnly = document.getElementById('showListedOnly').checked;
+
         // Get the next batch of items from the witchJson array
-        const batch = filteredWitchJson.slice(currentBatch, currentBatch + batchSize);
+        let batch = filteredWitchJson.slice(currentBatch, currentBatch + batchSize);
+
+        // Filter out witches with price 0 if the checkbox is checked
+        if (showListedOnly) {
+            batch = batch.filter(witch => witch.p !== 0);
+        }
+
         populateWitchesGrid(batch);
 
         // Update the current position
@@ -353,7 +440,12 @@
     function populateWitchesGrid(batch) {
         const container = document.getElementById('witches-grid');
 
+        // Get the checkbox value
+        const showListedOnly = document.getElementById('showListedOnly').checked;
+
         batch.forEach(witch => {
+            if (showListedOnly && witch.p === 0) return;
+
             //Witch Div
             const witchContainer = document.createElement('div');
             witchContainer.classList.add('col-12', 'col-sm-6', 'col-md-4', 'col-lg-3', 'text-center', 'mb-4');
@@ -376,6 +468,14 @@
             //Put them together
             witchContainer.appendChild(title);
             witchContainer.appendChild(img);
+
+            // Conditionally add price if not 0
+            if (witch.p && witch.p !== 0) {
+                const price = document.createElement('p');
+                price.innerText = `${witch.p} BTC`;
+                price.classList.add('witch-price', 'mt-2'); // Optional classes for styling
+                witchContainer.appendChild(price);
+            }
 
             //Append to the grid
             container.appendChild(witchContainer);
