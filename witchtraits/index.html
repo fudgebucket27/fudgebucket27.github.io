@@ -287,7 +287,7 @@
         // Reset the grid and current batch
         currentBatch = 0;
         document.getElementById('witches-grid').innerHTML = ''; // Clear current grid
-
+        applyTraitFilter();
         // Load filtered data based on the checkbox state
         loadNextBatch();
     });
