@@ -304,7 +304,7 @@
 
     function sortWitchData() {
         const sortOption = document.getElementById('sortOptions').value;
-
+        document.getElementById('loadingSpinner').style.display = 'flex';
         switch (sortOption) {
             case 'id-asc':
                 filteredWitchJson.sort((a, b) => a.i - b.i);
@@ -321,6 +321,7 @@
             default:
                 break;
         }
+        document.getElementById('loadingSpinner').style.display = 'none';
     }
 
     async function getWitchJson() {
