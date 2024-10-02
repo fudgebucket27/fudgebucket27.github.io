@@ -265,7 +265,7 @@
 
     document.getElementById('clearFiltersBtn').addEventListener('click', () => {
         // Clear all dropdowns to "All"
-        const dropdowns = document.querySelectorAll('#traitFilter select');
+        const dropdowns = document.querySelectorAll('#traitFilter select:not(#sortOptions)');
         dropdowns.forEach(dropdown => {
             dropdown.value = ''; // Reset to "All"
         });
@@ -626,7 +626,9 @@
 
     function applyTraitFilter() {
         // Get all dropdowns inside the filter container
-        const dropdowns = document.querySelectorAll('#traitFilter select');
+        const dropdowns = document.querySelectorAll('#traitFilter select:not(#sortOptions)');
+
+        const showListedOnly = document.getElementById('showListedOnly').checked;
 
         // Filter witches based on selected trait values
         filteredWitchJson = witchJson.filter(witch => {
@@ -641,11 +643,16 @@
                 }
             }
 
+            // If "Show Listed Only" is checked, ensure the price is not 0
+            if (showListedOnly && witch.p === 0) {
+                return false;
+            }
+
             return true; // Include the witch if all filters match
         });
 
         // Update dropdown options based on the filtered witches
-        updateTraitDropdowns();
+        updateTraitDropdowns(showListedOnly);
 
         // Reset the grid and current batch
         currentBatch = 0;
@@ -669,6 +676,9 @@
 
             // Calculate counts based on the currently filtered witches
             filteredWitchJson.forEach(witch => {
+                // If "Show Listed Only" is checked, ensure the witch is listed before counting
+                if (showListedOnly && witch.p === 0) return;
+                
                 if (witch.t[traitName] && witch.t[traitName].v) {
                     const value = witch.t[traitName].v;
                     if (traitCounts.has(value)) {
