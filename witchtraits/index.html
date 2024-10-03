@@ -437,8 +437,10 @@
 
     function populateWitchesGrid(batch) {
         const container = document.getElementById('witches-grid');
-
+        const showListedOnly = document.getElementById('showListedOnly').checked;
         batch.forEach(witch => {
+            if (showListedOnly && witch.p === 0) return;
+
             // Witch Div
             const witchContainer = document.createElement('div');
             witchContainer.classList.add('col-12', 'col-sm-6', 'col-md-4', 'col-lg-3', 'text-center', 'mb-4', 'd-flex', 'flex-column');
