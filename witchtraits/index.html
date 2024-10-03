@@ -438,44 +438,57 @@
     function populateWitchesGrid(batch) {
         const container = document.getElementById('witches-grid');
 
-        // Get the checkbox value
-        const showListedOnly = document.getElementById('showListedOnly').checked;
-
         batch.forEach(witch => {
-            if (showListedOnly && witch.p === 0) return;
-
-            //Witch Div
+            // Witch Div
             const witchContainer = document.createElement('div');
-            witchContainer.classList.add('col-12', 'col-sm-6', 'col-md-4', 'col-lg-3', 'text-center', 'mb-4');
+            witchContainer.classList.add('col-12', 'col-sm-6', 'col-md-4', 'col-lg-3', 'text-center', 'mb-4', 'd-flex', 'flex-column');
 
-            //Title
+            // Inner container to hold content
+            const contentContainer = document.createElement('div');
+            contentContainer.classList.add('d-flex', 'flex-column', 'align-items-center');
+
+            // Title
             const title = document.createElement('h6');
             title.innerText = `Taproot Witch #${witch.i}`;
             title.classList.add('witch-title');
 
-            //Image
+            // Image
             const img = document.createElement('img');
             img.dataset.src = `https://loopers.azureedge.net/taprootwitches/images/${witch.i}.png`;
             img.classList.add('lazy-witch', 'img-fluid', 'rounded');
             img.style.cursor = 'pointer';
 
-
             // Add click event to open modal with witch details
             img.addEventListener('click', () => openWitchModal(witch));
 
-            //Put them together
-            witchContainer.appendChild(title);
-            witchContainer.appendChild(img);
+            // Put title and image together in content container
+            contentContainer.appendChild(title);
+            contentContainer.appendChild(img);
 
-            // Conditionally add price if not 0
+            // "Buy Now" button
+            const buyNowBtn = document.createElement('button');
+            buyNowBtn.classList.add('btn', 'btn-danger', 'mt-2', 'w-50'); // 'w-75' to control button width
+
+            // Check if the witch is listed or not and update button text
             if (witch.p && witch.p !== 0) {
-                const price = document.createElement('p');
-                price.innerText = `${witch.p} BTC`;
-                price.classList.add('witch-price', 'mt-2'); // Optional classes for styling
-                witchContainer.appendChild(price);
+                buyNowBtn.innerText = `${witch.p} BTC`;
+            } else {
+                buyNowBtn.innerText = 'Not Listed';
             }
 
-            //Append to the grid
+            // Add click event to redirect to the external website
+            buyNowBtn.onclick = () => {
+                const url = `https://magiceden.io/ordinals/item-details/${witch.ii}`; // Replace with your target URL
+                window.open(url, '_blank'); // Open in a new tab
+            };
+
+            // Append button to content container
+            contentContainer.appendChild(buyNowBtn);
+
+            // Append content container to main container
+            witchContainer.appendChild(contentContainer);
+
+            // Append to the grid
             container.appendChild(witchContainer);
         });
 
