@@ -132,6 +132,11 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="type" class="formLabel">Type:</label>
+                        <select id="type" class="form-control"></select>
+                    </div>
+
+                    <div class="form-group">
                         <label for="moon" class="formLabel">Moon:</label>
                         <select id="moon" class="form-control"></select>
                     </div>
@@ -153,8 +158,7 @@
     </div>
     <script>
         // jasonsturges/lunarphase-js
-        !function (e) { var n, r, u, t, N, a, _ = ((n = _ || {}).NORTHERN = "Northern", n.SOUTHERN = "Southern", n), i = ((r = i || {}).NEW = "\uD83C\uDF11", r.WAXING_CRESCENT = "\uD83C\uDF12", r.FIRST_QUARTER = "\uD83C\uDF13", r.WAXING_GIBBOUS = "\uD83C\uDF14", r.FULL = "\uD83C\uDF15", r.WANING_GIBBOUS = "\uD83C\uDF16", r.LAST_QUARTER = "\uD83C\uDF17", r.WANING_CRESCENT = "\uD83C\uDF18", r), A = ((u = A || {}).NEW = "\uD83C\uDF11", u.WAXING_CRESCENT = "\uD83C\uDF18", u.FIRST_QUARTER = "\uD83C\uDF17", u.WAXING_GIBBOUS = "\uD83C\uDF16", u.FULL = "\uD83C\uDF15", u.WANING_GIBBOUS = "\uD83C\uDF14", u.LAST_QUARTER = "\uD83C\uDF13", u.WANING_CRESCENT = "\uD83C\uDF12", u), E = ((t = E || {}).ANOMALISTIC = "Anomalistic", t.DRACONIC = "Draconic", t.SIDEREAL = "Sidereal", t.SYNODIC = "Synodic", t.TROPICAL = "Tropical", t), R = ((N = R || {}).NEW = "New Moon", N.WAXING_CRESCENT = "Waxing Crescent", N.FIRST_QUARTER = "First Quarter", N.WAXING_GIBBOUS = "Waxing Gibbous", N.FULL = "Full Moon", N.WANING_GIBBOUS = "Waning Gibbous", N.LAST_QUARTER = "Last Quarter", N.WANING_CRESCENT = "Waning Crescent", N), I = { fromDate: function (e = new Date) { return e.getTime() / 864e5 - e.getTimezoneOffset() / 1440 + 2440587.5 }, toDate: function (e) { var n = new Date; return n.setTime((e - 2440587.5 + n.getTimezoneOffset() / 1440) * 864e5), n } }, o = { hemisphere: _.NORTHERN }, T = function (e) { return (e -= Math.floor(e)) < 0 && (e += 1), e }, s = ((a = s || {}).EARTH_RADII = "Earth Radii", a.KILOMETERS = "km", a.MILES = "m", a); e.Hemisphere = _, e.Julian = I, e.LunarMonth = E, e.LunarPhase = R, e.Moon = { lunarAge: function (e = new Date) { return 29.53058770576 * this.lunarAgePercent(e) }, lunarAgePercent: function (e = new Date) { return T((I.fromDate(e) - 2451550.1) / 29.53058770576) }, lunationNumber: function (e = new Date) { return Math.round((I.fromDate(e) - 2423436.6115277777) / 29.53058770576) + 1 }, lunarDistance: function (e = new Date) { var n = I.fromDate(e), r = 2 * this.lunarAgePercent(e) * Math.PI, u = 2 * Math.PI * T((n - 2451562.2) / 27.55454988); return 60.4 - 3.3 * Math.cos(u) - .6 * Math.cos(2 * r - u) - .5 * Math.cos(2 * r) }, lunarPhase: function (e = new Date, n = {}) { n = Object.assign({}, o, n); var r = this.lunarAge(e); return r < 1.84566173161 ? R.NEW : r < 5.53698519483 ? R.WAXING_CRESCENT : r < 9.22830865805 ? R.FIRST_QUARTER : r < 12.91963212127 ? R.WAXING_GIBBOUS : r < 16.61095558449 ? R.FULL : r < 20.30227904771 ? R.WANING_GIBBOUS : r < 23.99360251093 ? R.LAST_QUARTER : r < 27.68492597415 ? R.WANING_CRESCENT : R.NEW }, lunarPhaseEmoji: function (e = new Date, n = {}) { n = Object.assign({}, o, n); var r = this.lunarPhase(e); return this.emojiForLunarPhase(r, n) }, emojiForLunarPhase: function (e, n) { var r = Object.assign({}, o, n).hemisphere === _.SOUTHERN ? A : i; switch (e) { case R.WANING_CRESCENT: return r.WANING_CRESCENT; case R.LAST_QUARTER: return r.LAST_QUARTER; case R.WANING_GIBBOUS: return r.WANING_GIBBOUS; case R.FULL: return r.FULL; case R.WAXING_GIBBOUS: return r.WAXING_GIBBOUS; case R.FIRST_QUARTER: return r.FIRST_QUARTER; case R.WAXING_CRESCENT: return r.WAXING_CRESCENT; default: return r.NEW } }, isWaxing: function (e = new Date) { return 14.765 >= this.lunarAge(e) }, isWaning: function (e = new Date) { return this.lunarAge(e) > 14.765 } }, e.NorthernHemisphereLunarEmoji = i, e.SouthernHemisphereLunarEmoji = A, e.Unit = s }("undefined" != typeof window ? window : global);
-
+        !function(e){var n,r,u,t,N,a,_=((n=_||{}).NORTHERN="Northern",n.SOUTHERN="Southern",n),i=((r=i||{}).NEW="\uD83C\uDF11",r.WAXING_CRESCENT="\uD83C\uDF12",r.FIRST_QUARTER="\uD83C\uDF13",r.WAXING_GIBBOUS="\uD83C\uDF14",r.FULL="\uD83C\uDF15",r.WANING_GIBBOUS="\uD83C\uDF16",r.LAST_QUARTER="\uD83C\uDF17",r.WANING_CRESCENT="\uD83C\uDF18",r),A=((u=A||{}).NEW="\uD83C\uDF11",u.WAXING_CRESCENT="\uD83C\uDF18",u.FIRST_QUARTER="\uD83C\uDF17",u.WAXING_GIBBOUS="\uD83C\uDF16",u.FULL="\uD83C\uDF15",u.WANING_GIBBOUS="\uD83C\uDF14",u.LAST_QUARTER="\uD83C\uDF13",u.WANING_CRESCENT="\uD83C\uDF12",u),E=((t=E||{}).ANOMALISTIC="Anomalistic",t.DRACONIC="Draconic",t.SIDEREAL="Sidereal",t.SYNODIC="Synodic",t.TROPICAL="Tropical",t),R=((N=R||{}).NEW="New Moon",N.WAXING_CRESCENT="Waxing Crescent",N.FIRST_QUARTER="First Quarter",N.WAXING_GIBBOUS="Waxing Gibbous",N.FULL="Full Moon",N.WANING_GIBBOUS="Waning Gibbous",N.LAST_QUARTER="Last Quarter",N.WANING_CRESCENT="Waning Crescent",N),I={fromDate:function(e=new Date){return e.getTime()/864e5-e.getTimezoneOffset()/1440+2440587.5},toDate:function(e){var n=new Date;return n.setTime((e-2440587.5+n.getTimezoneOffset()/1440)*864e5),n}},o={hemisphere:_.NORTHERN},T=function(e){return(e-=Math.floor(e))<0&&(e+=1),e},s=((a=s||{}).EARTH_RADII="Earth Radii",a.KILOMETERS="km",a.MILES="m",a);e.Hemisphere=_,e.Julian=I,e.LunarMonth=E,e.LunarPhase=R,e.Moon={lunarAge:function(e=new Date){return 29.53058770576*this.lunarAgePercent(e)},lunarAgePercent:function(e=new Date){return T((I.fromDate(e)-2451550.1)/29.53058770576)},lunationNumber:function(e=new Date){return Math.round((I.fromDate(e)-2423436.6115277777)/29.53058770576)+1},lunarDistance:function(e=new Date){var n=I.fromDate(e),r=2*this.lunarAgePercent(e)*Math.PI,u=2*Math.PI*T((n-2451562.2)/27.55454988);return 60.4-3.3*Math.cos(u)-.6*Math.cos(2*r-u)-.5*Math.cos(2*r)},lunarPhase:function(e=new Date,n={}){n=Object.assign({},o,n);var r=this.lunarAge(e);return r<1.84566173161?R.NEW:r<5.53698519483?R.WAXING_CRESCENT:r<9.22830865805?R.FIRST_QUARTER:r<12.91963212127?R.WAXING_GIBBOUS:r<16.61095558449?R.FULL:r<20.30227904771?R.WANING_GIBBOUS:r<23.99360251093?R.LAST_QUARTER:r<27.68492597415?R.WANING_CRESCENT:R.NEW},lunarPhaseEmoji:function(e=new Date,n={}){n=Object.assign({},o,n);var r=this.lunarPhase(e);return this.emojiForLunarPhase(r,n)},emojiForLunarPhase:function(e,n){var r=Object.assign({},o,n).hemisphere===_.SOUTHERN?A:i;switch(e){case R.WANING_CRESCENT:return r.WANING_CRESCENT;case R.LAST_QUARTER:return r.LAST_QUARTER;case R.WANING_GIBBOUS:return r.WANING_GIBBOUS;case R.FULL:return r.FULL;case R.WAXING_GIBBOUS:return r.WAXING_GIBBOUS;case R.FIRST_QUARTER:return r.FIRST_QUARTER;case R.WAXING_CRESCENT:return r.WAXING_CRESCENT;default:return r.NEW}},isWaxing:function(e=new Date){return 14.765>=this.lunarAge(e)},isWaning:function(e=new Date){return this.lunarAge(e)>14.765}},e.NorthernHemisphereLunarEmoji=i,e.SouthernHemisphereLunarEmoji=A,e.Unit=s}("undefined"!=typeof window?window:global);
         const imageJson = {
             "Background": {
                 "Blue": "d1f1d9b8c19f49991d03c425ac08518ddebbfacb2e9b641a8f0600e1e7581e7ai0",
@@ -246,6 +250,7 @@
                 "Sky_Gradient2": "f364a9eda55347b957dbc090dd8bb3f1dc7c0872bb1b9051c5a0efbce2f36ecbi38",
                 "Turquoise": "f364a9eda55347b957dbc090dd8bb3f1dc7c0872bb1b9051c5a0efbce2f36ecbi40",
                 "Constellation Orange": "2042bfffb4af21a674eacd30e8cfce719e05da5f5072a2615b7dff44a6178f50i0"
+
             },
             "Robe": {
                 "Blue": "0124b9a69f63dacd2220e37cfbf50d071ec1ee2346346dff6b34ee815ebdd3edi1",
@@ -332,6 +337,7 @@
             },
             "Face": {
                 "Happy": "28a0478376d49ff47ad250e9901da86b23fa9cddb82f27184114940abaa2e9c8i0",
+                "Moon Eyes": "28a0478376d49ff47ad250e9901da86b23fa9cddb82f27184114940abaa2e9c8i0",
                 "Angry": "c2f2f1aa796f74b1cb8a38922404f201f4228f580c4640ea4a7aae3bec7cefbci0",
                 "Eye Lashes": "bca638e0ec8ab5dc2dbc8e755feaa6c5470f6acfa029de27ac7c073cc03d9be9i0",
                 "Closed": "a982b0c28acc5b3d19b11a075892867f8d491f1d8d1c6fff4d7fc27021c9fa25i0",
@@ -514,7 +520,9 @@
             "Wand": {
                 "Standard Issue": "890712e61bc4c74134cba6917c335403c0b0d65bb9f66b6806bfab543ddd81dei0",
                 "Star Wand": "f364a9eda55347b957dbc090dd8bb3f1dc7c0872bb1b9051c5a0efbce2f36ecbi39",
+                "Gold Wand": "c6c64c488ef64b2d7a88ccef405753d9e57593ad836edae04327ba341361ba89i4",
                 "GB": "fc86e8c9add349b5849358c4619f67cb15fee7f83ea64c8a8549a386fe07d568i0",
+                "GB Star": "c6c64c488ef64b2d7a88ccef405753d9e57593ad836edae04327ba341361ba89i2",
                 "Ghost Wand": "b5bfc844e2db22a9f6f059ab181e4771b637edf78383fdb0f49850b5f41147a2i0",
                 "Chalk Wand": "1589adb289d58992133457967ab46a647b763a2c5e97d753ecab568357218da4i23",
                 "Neon Blue": "2d95a7a95199159363c392d8997c652fae841c89e86ae70f49396dbfce3f0a4bi0",
@@ -527,8 +535,9 @@
                 "Feather": "6cf996d6bf3552b9027cb959076419329f918952bae4db0fa1eb2ebbe7bf89e0i5",
                 "French Fry Wand": "72c5e4ad2b54dd9b48d98fffea59348bc93ba6e4b7f4105019a580fc784e9baei11",
                 "Magicians Wand": "f364a9eda55347b957dbc090dd8bb3f1dc7c0872bb1b9051c5a0efbce2f36ecbi16",
-                "Moon Staff": "175f143aa5f0a1085c6016f07579d3f57e16e59a6f2cf13ca60ca007ba63e499i45",
-                "Moon Wand": "f364a9eda55347b957dbc090dd8bb3f1dc7c0872bb1b9051c5a0efbce2f36ecbi17"
+                "Moon Staff": "c6c64c488ef64b2d7a88ccef405753d9e57593ad836edae04327ba341361ba89i19",
+                "Moon Wand": "f364a9eda55347b957dbc090dd8bb3f1dc7c0872bb1b9051c5a0efbce2f36ecbi17",
+                "Pumpin Spice Wand": "c6c64c488ef64b2d7a88ccef405753d9e57593ad836edae04327ba341361ba89i11"
             },
             "Overlay": {
                 "Witch-A-Sketch": "0e26dd6da75ffbc51228d8c19f7d45e5c3099de51b7456c92cd7310d9d585c51i0",
@@ -576,6 +585,7 @@
                 "Cigarette Holder": "175f143aa5f0a1085c6016f07579d3f57e16e59a6f2cf13ca60ca007ba63e499i6",
                 "Spice Bag": "175f143aa5f0a1085c6016f07579d3f57e16e59a6f2cf13ca60ca007ba63e499i70",
                 "Antenna Hatband": "4e4aeebf9c93ce2603ef8435a865eb2ff596998a92fa26d0da47c9068efc2df8i0",
+                "Gold Cape": "c6c64c488ef64b2d7a88ccef405753d9e57593ad836edae04327ba341361ba89i3",
                 "Antenna": "4e4aeebf9c93ce2603ef8435a865eb2ff596998a92fa26d0da47c9068efc2df8i1",
                 "Lightning": "a35c5f827110f3a8ea84fd7e829a9adcafe9a54f0f82c16ab114fc80c28cf432i0",
                 "Cracked Glass": "b4b8bd21ea0fee6d84d15dd2eb6aa31b4796adc040fe1294803e332b684e2844i0",
@@ -597,7 +607,7 @@
                 "Waxing Gibbous": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i35",
                 "Full Moon": "",
                 "Waning Gibbous": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i36",
-                "Second Quarter": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i37",
+                "Last Quarter": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i37",
                 "Waning Crescent": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i38"
             },
             "Neon": {
@@ -607,7 +617,7 @@
                 "Waxing Gibbous": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i42",
                 "Full Moon": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i43",
                 "Waning Gibbous": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i44",
-                "Second Quarter": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i45",
+                "Last Quarter": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i45",
                 "Waning Crescent": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i46",
             },
             "Paint": {
@@ -617,7 +627,7 @@
                 "Waxing Gibbous": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i42",
                 "Full Moon": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i43",
                 "Waning Gibbous": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i44",
-                "Second Quarter": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i45",
+                "Last Quarter": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i45",
                 "Waning Crescent": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i46",
             },
             "Bolo": {
@@ -627,17 +637,27 @@
                 "Waxing Gibbous": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i3",
                 "Full Moon": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i4",
                 "Waning Gibbous": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i5",
-                "Second Quarter": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i6",
+                "Last Quarter": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i6",
+                "Waning Crescent": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i7"
+            },
+            "Cult": {
+                "New Moon": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i0",
+                "Waxing Crescent": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i1",
+                "First Quarter": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i2",
+                "Waxing Gibbous": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i3",
+                "Full Moon": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i4",
+                "Waning Gibbous": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i5",
+                "Last Quarter": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i6",
                 "Waning Crescent": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i7"
             },
             "Chalk": {
                 "New Moon": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i8",
-                "Waxing Crescent": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i0",
+                "Waxing Crescent": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i9",
                 "First Quarter": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i10",
                 "Waxing Gibbous": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i11",
                 "Full Moon": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i12",
                 "Waning Gibbous": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i13",
-                "Second Quarter": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i14",
+                "Last Quarter": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i14",
                 "Waning Crescent": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i15"
             },
             "Eyes": {
@@ -647,7 +667,7 @@
                 "Waxing Gibbous": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i20",
                 "Full Moon": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i21",
                 "Waning Gibbous": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i22",
-                "Second Quarter": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i23",
+                "Last Quarter": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i23",
                 "Waning Crescent": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i24"
             },
             "Moonbucks": {
@@ -657,7 +677,7 @@
                 "Waxing Gibbous": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i27",
                 "Full Moon": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i28",
                 "Waning Gibbous": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i29",
-                "Second Quarter": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i30",
+                "Last Quarter": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i30",
                 "Waning Crescent": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i31"
             },
             "Pepperoni": {
@@ -667,7 +687,7 @@
                 "Waxing Gibbous": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i49",
                 "Full Moon": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i50",
                 "Waning Gibbous": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i51",
-                "Second Quarter": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i52",
+                "Last Quarter": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i52",
                 "Waning Crescent": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i53"
             },
             "Witchintosh": {
@@ -677,7 +697,7 @@
                 "Waxing Gibbous": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i57",
                 "Full Moon": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i58",
                 "Waning Gibbous": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i59",
-                "Second Quarter": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i60",
+                "Last Quarter": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i60",
                 "Waning Crescent": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i61"
             },
             "GB Land": {
@@ -687,7 +707,7 @@
                 "Waxing Gibbous": "2042bfffb4af21a674eacd30e8cfce719e05da5f5072a2615b7dff44a6178f50i3",
                 "Full Moon": "2042bfffb4af21a674eacd30e8cfce719e05da5f5072a2615b7dff44a6178f50i4",
                 "Waning Gibbous": "2042bfffb4af21a674eacd30e8cfce719e05da5f5072a2615b7dff44a6178f50i5",
-                "Second Quarter": "2042bfffb4af21a674eacd30e8cfce719e05da5f5072a2615b7dff44a6178f50i6",
+                "Last Quarter": "2042bfffb4af21a674eacd30e8cfce719e05da5f5072a2615b7dff44a6178f50i6",
                 "Waning Crescent": "2042bfffb4af21a674eacd30e8cfce719e05da5f5072a2615b7dff44a6178f50i7"
             },
             "GB Mempool": {
@@ -697,7 +717,7 @@
                 "Waxing Gibbous": "2042bfffb4af21a674eacd30e8cfce719e05da5f5072a2615b7dff44a6178f50i11",
                 "Full Moon": "2042bfffb4af21a674eacd30e8cfce719e05da5f5072a2615b7dff44a6178f50i12",
                 "Waning Gibbous": "2042bfffb4af21a674eacd30e8cfce719e05da5f5072a2615b7dff44a6178f50i13",
-                "Second Quarter": "2042bfffb4af21a674eacd30e8cfce719e05da5f5072a2615b7dff44a6178f50i14",
+                "Last Quarter": "2042bfffb4af21a674eacd30e8cfce719e05da5f5072a2615b7dff44a6178f50i14",
                 "Waning Crescent": "2042bfffb4af21a674eacd30e8cfce719e05da5f5072a2615b7dff44a6178f50i15"
             },
             "Sketch": {
@@ -707,12 +727,55 @@
                 "Waxing Gibbous": "c4af62086bec03dd4493f5320d3a04b61307a2471072115be4cba1e0abe451d8i3",
                 "Full Moon": "c4af62086bec03dd4493f5320d3a04b61307a2471072115be4cba1e0abe451d8i4",
                 "Waning Gibbous": "c4af62086bec03dd4493f5320d3a04b61307a2471072115be4cba1e0abe451d8i5",
-                "Second Quarter": "c4af62086bec03dd4493f5320d3a04b61307a2471072115be4cba1e0abe451d8i6",
+                "Last Quarter": "c4af62086bec03dd4493f5320d3a04b61307a2471072115be4cba1e0abe451d8i6",
                 "Waning Crescent": "c4af62086bec03dd4493f5320d3a04b61307a2471072115be4cba1e0abe451d8i7"
+            },
+            "Moon Eyes": {
+                "New Moon": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i17",
+                "Waxing Crescent": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i18",
+                "First Quarter": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i19",
+                "Waxing Gibbous": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i20",
+                "Full Moon": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i21",
+                "Waning Gibbous": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i22",
+                "Last Quarter": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i23",
+                "Waning Crescent": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i24"
+            },
+            "Coffee Apron": {
+                "New Moon": "",
+                "Waxing Crescent": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i25",
+                "First Quarter": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i26",
+                "Waxing Gibbous": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i27",
+                "Full Moon": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i28",
+                "Waning Gibbous": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i29",
+                "Last Quarter": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i30",
+                "Waning Crescent": "79f70b3ee0320b0b2deef9a671735873d4cea13d25c109850932e015a9966945i31"
+            },
+            "Moon Staff": {
+                "New Moon": "",
+                "Waxing Crescent": "c6c64c488ef64b2d7a88ccef405753d9e57593ad836edae04327ba341361ba89i12",
+                "First Quarter": "c6c64c488ef64b2d7a88ccef405753d9e57593ad836edae04327ba341361ba89i13",
+                "Waxing Gibbous": "c6c64c488ef64b2d7a88ccef405753d9e57593ad836edae04327ba341361ba89i14",
+                "Full Moon": "c6c64c488ef64b2d7a88ccef405753d9e57593ad836edae04327ba341361ba89i15",
+                "Waning Gibbous": "c6c64c488ef64b2d7a88ccef405753d9e57593ad836edae04327ba341361ba89i16",
+                "Last Quarter": "c6c64c488ef64b2d7a88ccef405753d9e57593ad836edae04327ba341361ba89i17",
+                "Waning Crescent": "c6c64c488ef64b2d7a88ccef405753d9e57593ad836edae04327ba341361ba89i18"
             }
         };
 
-        const layerKeys = ['Background', 'Robe', 'Skin', 'Face', 'Hair', 'Hat', 'Wand', 'Moon', 'Special'];
+        const witchTypeJson = {
+            "Good Witch": {
+                "top": "c6c64c488ef64b2d7a88ccef405753d9e57593ad836edae04327ba341361ba89i5",
+                "top1": "c6c64c488ef64b2d7a88ccef405753d9e57593ad836edae04327ba341361ba89i6",
+                "wings": "c6c64c488ef64b2d7a88ccef405753d9e57593ad836edae04327ba341361ba89i0"
+            },
+            "Bad Witch": {
+                "top": "c6c64c488ef64b2d7a88ccef405753d9e57593ad836edae04327ba341361ba89i9",
+                "top1": "c6c64c488ef64b2d7a88ccef405753d9e57593ad836edae04327ba341361ba89i8",
+                "wings": "c6c64c488ef64b2d7a88ccef405753d9e57593ad836edae04327ba341361ba89i1"
+            }
+        };
+
+        const layerKeys = ['Background', 'Robe', 'Skin', 'Face', 'Hair', 'Hat', 'Wand', 'Special', 'Moon', 'Type'];
 
         // Dynamically populate the select options
         function populateSelectOptions() {
@@ -728,7 +791,15 @@
                             options += `<option value="${optionValue}">${moonType}-${moonPhase}</option>`;
                         });
                     });
-                } else if (imageJson[layer]) {
+                }
+                else if (layer === 'Type') {
+                    // Special case for Witch Type
+                    const witchTypes = ['Good Witch', 'Bad Witch', 'Basic Witch'];
+                    witchTypes.forEach(witchType => {
+                        options += `<option value="${witchType}">${witchType}</option>`;
+                    });
+                }
+                else if (imageJson[layer]) {
                     Object.keys(imageJson[layer]).sort().forEach(trait => {
                         options += `<option value="${trait}">${trait}</option>`;
                     });
@@ -754,8 +825,7 @@
                     // Special handling for Moon
                     let [moonType, moonPhase] = selectedValue.split('-');
 
-                    if(moonPhase === undefined)
-                    {
+                    if (moonPhase === undefined) {
                         moonType = "Normal";
                         moonPhase = "New Moon";
                     }
@@ -770,7 +840,6 @@
                     variation['MoonPhase'] = trimmedMoonPhase;
                 } else {
                     variation[layer] = selectedValue;
-                    console.log(variation[layer]);
                 }
             });
 
@@ -807,8 +876,7 @@
                     "Coffee Apron": "Robe",
                     "Spice Bag": "Robe",
                     "Cigarette Holder": "Top",
-                    "Antenna": "Top",
-                    "Antenna Hatband": "Top",
+                    "Antenna Headband": "Top",
                     "Laser Eyes": "Top",
                     "Cracked Glass": "Background",
                     "Glow Strong": "Background",
@@ -848,18 +916,20 @@
                 const backgroundIndex = imageKeys.indexOf("Background");
 
                 const moonType = variation["MoonType"];
-                const moonPhase = variation["MoonPhase"];
-                console.log(moonType);
-                console.log(moonPhase);
-
-                const moonUrl = createImageUrl(moonJson[moonType][moonPhase]);
-                imageUrls.splice(backgroundIndex + 1, 0, moonUrl);
+                const lunarPhase = variation["MoonPhase"];
+                if (moonType && moonJson[moonType] && moonJson[moonType][lunarPhase]) {
+                    const moonUrl = createImageUrl(moonJson[moonType][lunarPhase]);
+                    imageUrls.splice(backgroundIndex + 1, 0, moonUrl);
+                }
 
                 const idNo = variation["Id"];
                 const robeTrait = variation["Robe"];
                 const faceTrait = variation["Face"];
                 const hatTrait = variation["Hat"];
+                const wandTrait = variation["Wand"];
                 const bgTrait = variation["Background"];
+                const specialTrait = variation["Special"];
+                const witchTrait = variation["Type"];
 
                 if ((bgTrait && (bgTrait.includes("Cosmos") || bgTrait.includes("Matrix"))) &&
                     (hatTrait && (hatTrait.includes("Bent") || hatTrait.includes("Stars")))) {
@@ -889,16 +959,12 @@
                     }
                 }
 
-                const specialTrait = variation['Special'];
                 if (specialTrait && imageJson['Special'] && specialLayering[specialTrait]) {
                     const specialUrl = createImageUrl(imageJson['Special'][specialTrait]);
                     if (specialLayering[specialTrait] === "Top") {
                         imageUrls.push(specialUrl);
                     } else if (specialLayering[specialTrait] === "Background") {
-                        const backgroundIndex = imageKeys.indexOf("Background");
-                        if (backgroundIndex > -1) {
-                            imageUrls.splice(backgroundIndex + 1, 0, specialUrl);
-                        }
+                        imageUrls.splice(backgroundIndex + 1, 0, specialUrl);
                     } else if (specialLayering[specialTrait] === "Robe") {
                         const robeIndex = imageKeys.indexOf("Robe");
                         if (robeIndex > -1) {
@@ -907,17 +973,135 @@
                     }
                 }
 
-                if (specialTrait === "Sparkle Robe Overlay" || specialTrait === "Sparkle Hat Overlay") {
+                if (specialTrait === "Sparkle") {
                     const sparkleRobeUrl = createImageUrl(imageJson['Special']['Sparkle Robe Overlay']);
                     const sparkleHatUrl = createImageUrl(imageJson['Special']['Sparkle Hat Overlay']);
 
                     const robeIndex = imageKeys.indexOf("Robe");
                     if (robeIndex > -1) {
-                        imageUrls.splice(robeIndex + 2, 0, sparkleRobeUrl);
+                        imageUrls.splice(robeIndex + 3, 0, sparkleRobeUrl);
                     }
 
                     imageUrls.push(sparkleHatUrl);
                 }
+
+                if (specialTrait === "Gold Cape") {
+                    const goldCapeUrl = createImageUrl(imageJson['Special']['Gold Cape']);
+
+                    const robeIndex = imageKeys.indexOf("Robe");
+                    if (robeIndex > -1) {
+                        imageUrls.splice(robeIndex + 2, 0, goldCapeUrl);
+                    }
+
+                    imageUrls.push(goldCapeUrl);
+                }
+
+                if (wandTrait === "Moon Staff") {
+                    const wandIndex = imageKeys.indexOf("Wand");
+                    if (moonJson["Moon Staff"] && moonJson["Moon Staff"][lunarPhase]) {
+                        const staffMoonUrl = createImageUrl(moonJson["Moon Staff"][lunarPhase]);
+                        imageUrls.splice(wandIndex + 1, 0, staffMoonUrl);
+                        imageUrls.push(staffMoonUrl);
+
+                    }
+                }
+
+                if (specialTrait === "Coffee Apron") {
+                    const robeIndex = imageKeys.indexOf("Robe");
+                    if (moonJson["Coffee Apron"] && moonJson["Coffee Apron"][lunarPhase]) {
+                        const coffeeApronMoonUrl = createImageUrl(moonJson["Coffee Apron"][lunarPhase]);
+                        imageUrls.splice(robeIndex + 1, 0, coffeeApronMoonUrl);
+                        imageUrls.push(coffeeApronMoonUrl);
+
+                    }
+                }
+
+                if (faceTrait === "Moon Eyes") {
+                    const faceIndex = imageKeys.indexOf("Face");
+                    if (moonJson["Moon Eyes"] && moonJson["Moon Eyes"][lunarPhase]) {
+                        const happyFaceMoonUrl = createImageUrl(moonJson["Moon Eyes"][lunarPhase]);
+                        imageUrls.splice(faceIndex + 1, 0, happyFaceMoonUrl);
+                        imageUrls.push(happyFaceMoonUrl);
+                    }
+                }
+
+                if (robeTrait.includes("Cult")) {
+                    const robeIndex = imageKeys.indexOf("Robe");
+                    if (moonJson["Cult"] && moonJson["Cult"][lunarPhase]) {
+                        const cultMoonUrl = createImageUrl(moonJson["Cult"][lunarPhase]);
+                        imageUrls.splice(robeIndex + 1, 0, cultMoonUrl);
+                        imageUrls.push(cultMoonUrl);
+                    }
+                }
+
+                if (witchTrait === "Good Witch" && hatTrait && hatTrait.includes("Cult")) {
+                    const hatIndex = imageKeys.indexOf("Hat");
+                    const bgIndex = imageKeys.indexOf("Background");
+                    if (witchTypeJson["Good Witch"]) {
+                        const goodWitchTopUrl = createImageUrl(witchTypeJson["Good Witch"]["top"]);
+                        const goodWitchWingsUrl = createImageUrl(witchTypeJson["Good Witch"]["wings"]);
+
+                        if (hatIndex > -1) {
+                            imageUrls.splice(hatIndex + 2, 0, goodWitchTopUrl);
+                        }
+
+                        if (bgIndex > -1) {
+                            imageUrls.splice(bgIndex + 1, 0, goodWitchWingsUrl);
+                        }
+                    }
+                }
+
+                if (witchTrait === "Good Witch" && hatTrait && !hatTrait.includes("Cult")) {
+                    const hatIndex = imageKeys.indexOf("Hat");
+                    const bgIndex = imageKeys.indexOf("Background");
+                    if (witchTypeJson["Good Witch"]) {
+                        const goodWitchTopUrl = createImageUrl(witchTypeJson["Good Witch"]["top1"]);
+                        const goodWitchWingsUrl = createImageUrl(witchTypeJson["Good Witch"]["wings"]);
+
+                        if (hatIndex > -1) {
+                            imageUrls.splice(hatIndex + 3, 0, goodWitchTopUrl);
+                        }
+
+                        if (bgIndex > -1) {
+                            imageUrls.splice(bgIndex + 1, 0, goodWitchWingsUrl);
+                        }
+                    }
+                }
+
+                if (witchTrait === "Bad Witch" && hatTrait && (hatTrait.includes("Hatband") || hatTrait.includes("LV") || hatTrait.includes("Snake") || hatTrait.includes("Nacho") || hatTrait.includes("Binbag"))) {
+                    const hatIndex = imageKeys.indexOf("Hat");
+                    const bgIndex = imageKeys.indexOf("Background");
+                    if (witchTypeJson["Bad Witch"]) {
+                        const goodWitchTopUrl = createImageUrl(witchTypeJson["Bad Witch"]["top"]);
+                        const goodWitchWingsUrl = createImageUrl(witchTypeJson["Bad Witch"]["wings"]);
+
+                        if (hatIndex > -1) {
+                            imageUrls.splice(hatIndex + 2, 0, goodWitchTopUrl);
+                        }
+
+                        if (bgIndex > -1) {
+                            imageUrls.splice(bgIndex + 2, 0, goodWitchWingsUrl);
+                        }
+                    }
+                }
+
+                if (witchTrait === "Bad Witch" && hatTrait && !hatTrait.includes("Hatband")) {
+                    const hatIndex = imageKeys.indexOf("Hat");
+                    const bgIndex = imageKeys.indexOf("Background");
+                    if (witchTypeJson["Bad Witch"]) {
+                        const badWitchTopUrl = createImageUrl(witchTypeJson["Bad Witch"]["top1"]);
+                        const badWitchWingsUrl = createImageUrl(witchTypeJson["Bad Witch"]["wings"]);
+
+                        if (hatIndex > -1) {
+                            imageUrls.splice(hatIndex + 2, 0, badWitchTopUrl);
+                        }
+
+                        if (bgIndex > -1) {
+                            imageUrls.splice(bgIndex + 2, 0, badWitchWingsUrl);
+                        }
+                    }
+                }
+
 
                 if (overlayUrl) {
                     imageUrls.push(createImageUrl(overlayUrl));
@@ -1129,7 +1313,15 @@
                     variation['MoonType'] = randomMoonType;
                     variation['MoonPhase'] = randomMoonPhase;
                     select.value = optionValue; // Set random value in the select element
-                } else {
+                }
+                else if (layer === 'Type') {
+                    // Special handling for Type (Witch)
+                    const witchTypes = ['Good Witch', 'Bad Witch', 'Basic Witch'];
+                    const randomWitchType = witchTypes[Math.floor(Math.random() * witchTypes.length)];
+                    variation['Type'] = randomWitchType;
+                    select.value = randomWitchType; // Set random value in the select element
+                }
+                else {
                     const traits = Object.keys(imageJson[layer] || {}).sort();
                     const randomTrait = traits[Math.floor(Math.random() * traits.length)];
                     variation[layer] = randomTrait;
