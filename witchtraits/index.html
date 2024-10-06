@@ -590,7 +590,7 @@
 
     // Dynamically create trait dropdowns
     function createTraitDropdowns() {
-        const traits = ['Background', 'Robe',  'Face', 'Hair', 'Hat', 'Hatband',  'Robe', 'Skin', 'Special', 'Type', 'Wand', 'Moon']; // Add other traits as needed
+        const traits = ['Background', 'Face', 'Hair', 'Hat', 'Hatband',  'Robe', 'Skin', 'Special', 'Type', 'Wand', 'Moon']; // Add other traits as needed
         const filterContainer = document.getElementById('traitFilter');
 
         traits.forEach(traitName => {
@@ -677,7 +677,7 @@
 
     function updateTraitDropdowns() {
         const showListedOnly = document.getElementById('showListedOnly').checked; // Add this line
-        const traits = ['Background', 'Robe',  'Face', 'Hair', 'Hat', 'Hatband',  'Robe', 'Skin', 'Special', 'Type', 'Wand', 'Moon']; // Add other traits as needed
+        const traits = ['Background', 'Face', 'Hair', 'Hat', 'Hatband',  'Robe', 'Skin', 'Special', 'Type', 'Wand', 'Moon']; // Add other traits as needed
 
         traits.forEach(traitName => {
             const select = document.getElementById(`${traitName}Trait`);
