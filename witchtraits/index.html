@@ -301,7 +301,7 @@
     });
 
     async function getWitchJson() {
-        const response = await fetch('https://loopers.azureedge.net/taprootwitches/witchesv3.json');
+        const response = await fetch('https://loopers.azureedge.net/taprootwitches/witchesv4.json');
         return await response.json();
     }
 
@@ -590,7 +590,7 @@
 
     // Dynamically create trait dropdowns
     function createTraitDropdowns() {
-        const traits = ['Background', 'Robe', 'Hat', 'Face', 'Skin', 'Hair', 'Wand', 'Special', 'Type', 'Moon']; // Add other traits as needed
+        const traits = ['Background', 'Face', 'Hair', 'Hat', 'Hatband',  'Robe', 'Skin', 'Special', 'Type', 'Wand', 'Moon']; // Add other traits as needed
         const filterContainer = document.getElementById('traitFilter');
 
         traits.forEach(traitName => {
@@ -677,7 +677,7 @@
 
     function updateTraitDropdowns() {
         const showListedOnly = document.getElementById('showListedOnly').checked; // Add this line
-        const traits = ['Background', 'Robe', 'Hat', 'Face', 'Skin', 'Hair', 'Wand', 'Special',  'Type', 'Moon'];
+        const traits = ['Background', 'Face', 'Hair', 'Hat', 'Hatband',  'Robe', 'Skin', 'Special', 'Type', 'Wand', 'Moon']; // Add other traits as needed
 
         traits.forEach(traitName => {
             const select = document.getElementById(`${traitName}Trait`);
